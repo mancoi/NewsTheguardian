@@ -7,4 +7,6 @@
     <string name="international_headline">International</string>
 
     <string name="newest_headline">Newest</string>
+
+    <string name="search_title">Search</string>
 </resources>
