@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
-import android.view.MenuItem;
 
 public class News_MainActivity extends AppCompatActivity {
 
@@ -53,20 +52,20 @@ public class News_MainActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
         ///////////// Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, Search_Activity.class)));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setIconifiedByDefault(true); //iconify the widget; expand it by default
 
 
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-//        if (id == R.id.search_button) {
-//            return super.onSearchRequested((SearchView)findViewById(R.id.search_button));
-//        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+////        if (id == R.id.search_button) {
+////            return super.onSearchRequested((SearchView)findViewById(R.id.search_button));
+////        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 }
