@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:divider="@null"
         android:dividerHeight="8dp"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:nestedScrollingEnabled="true"/>
 
     <!-- Empty view is only visible when the list has no items. -->
     <TextView
