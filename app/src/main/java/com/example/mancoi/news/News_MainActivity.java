@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 public class News_MainActivity extends AppCompatActivity {
@@ -20,6 +21,9 @@ public class News_MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Set the toolbar to support actionBar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // Find the view pager that will allow the user to swipe between fragments
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -49,23 +53,26 @@ public class News_MainActivity extends AppCompatActivity {
 
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
+        final SearchView searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
         ///////////// Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, Search_Activity.class)));
         searchView.setIconifiedByDefault(true); //iconify the widget; expand it by default
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.onActionViewCollapsed();
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//
-////        if (id == R.id.search_button) {
-////            return super.onSearchRequested((SearchView)findViewById(R.id.search_button));
-////        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+
 }
+

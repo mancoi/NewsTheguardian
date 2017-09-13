@@ -1,15 +1,21 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/NewsAppBarStyle</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--Style the text and menu icon of toolbar-->
+    <style name="toolBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="controlBackground">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:tint">#FFF</item>
     </style>
 
     <style name="subTextView">
