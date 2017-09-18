@@ -16,6 +16,10 @@ import android.widget.TextView;
  */
 
 public class Search_Activity extends AppCompatActivity {
+
+    private final String HTTP_REQUEST = "https://content.guardianapis.com/";
+    private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +58,7 @@ public class Search_Activity extends AppCompatActivity {
 
                 // Clear this current activity from the task stack and perform the search,
                 // because the search will create new activity, so we call finish() every time
-                // user perform the search to remove this current activity from the task stack,
+                // user perform the search to do that,
                 // then after the user has searched for multiple time and press the BACK button,
                 // we go to the main activity directly but not the search activity before
                 finish();
