@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--This group contain Editions's labels and its icons-->
+    <group android:id="@+id/edition_group">
+        <item
+            android:title="Australia Headline"
+            android:icon="@drawable/ic_edition_sidebar"/>
+        <item
+            android:title="US Headline"
+            android:icon="@drawable/ic_edition_sidebar"/>
+        <item
+            android:title="UK Headline"
+            android:icon="@drawable/ic_edition_sidebar"/>
+    </group>
+
+    <!--This group contains Sections's labels and its icons-->
+    <group android:id="@+id/section_group">
+        <item
+            android:title="Art and design"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Books"
+            android:icon="@drawable/ic_section_sidebar" />
+        <item
+            android:title="Business"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Culture"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Education"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Environment"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Fashion"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Film"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Football"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Jobs"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Life and style"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Media"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Politics"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Science"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Sport"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Technology"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Travel"
+            android:icon="@drawable/ic_section_sidebar"/>
+        <item
+            android:title="Weather"
+            android:icon="@drawable/ic_section_sidebar"/>
+    </group>
+</menu>

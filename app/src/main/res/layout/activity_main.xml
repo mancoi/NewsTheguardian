@@ -47,42 +47,13 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <!-- The navigation drawer -->
-    <LinearLayout
-        android:layout_width="240dp"
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_width="240dp"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:background="@android:color/white">
-
-        <ImageView
-            android:id="@+id/sidebar_imgView"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-
-            android:background="@color/colorPrimary" />
-
-        <ListView
-            android:id="@+id/left_drawer_edition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorPrimary" />
-
-        <ListView android:id="@+id/left_drawer_section"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:background="@android:color/white" />
-
-    </LinearLayout>
+        app:headerLayout="@layout/sidebar_header"
+        app:menu="@menu/sidebar_menu"/>
 
 
 </android.support.v4.widget.DrawerLayout>
