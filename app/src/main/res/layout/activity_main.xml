@@ -29,12 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/toolBarTheme"
-                app:layout_scrollFlags="scroll|enterAlways" />
+            <include layout="@layout/tool_bar" />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/sliding_tabs"
@@ -49,11 +44,11 @@
     <!-- The navigation drawer -->
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_height="match_parent"
         android:layout_width="240dp"
+        android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/sidebar_header"
-        app:menu="@menu/sidebar_menu"/>
+        app:menu="@menu/sidebar_menu" />
 
 
 </android.support.v4.widget.DrawerLayout>

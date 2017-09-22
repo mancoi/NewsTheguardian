@@ -22,7 +22,7 @@ import java.util.List;
  * Created by mancoi on 07/09/2017.
  */
 
-public class Search_Activity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>{
+public class Search_Activity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
 
     private final String HTTP_REQUEST = "https://content.guardianapis.com/search?";
     private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
