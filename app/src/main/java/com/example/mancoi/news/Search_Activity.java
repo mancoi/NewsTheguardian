@@ -47,10 +47,10 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            TextView tv = (TextView) findViewById(R.id.tv_srs);
+            TextView tv = (TextView) findViewById(R.id.tv_search_query);
             tv.setText(query);
 
-            mQuery = tv.getText().toString();
+            mQuery = query;
         }
 
         final ListView newsListItem = (ListView) findViewById(R.id.list_search_result);

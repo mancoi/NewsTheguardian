@@ -9,4 +9,6 @@
     <string name="newest_headline">Newest</string>
 
     <string name="search_title">Search</string>
+
+    <string name="search_query">Searched for:</string>
 </resources>
