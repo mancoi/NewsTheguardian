@@ -21,7 +21,7 @@
     <group android:id="@+id/section_group">
         <item
             android:id="@+id/artanddesign"
-            android:title="Art and design"
+            android:title="@string/art_and_design"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/books"
@@ -40,42 +40,55 @@
             android:title="Education"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/environment"
             android:title="Environment"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/fashion"
             android:title="Fashion"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/film"
             android:title="Film"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/football"
             android:title="Football"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/jobsadvice"
             android:title="Jobs"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/lifeandstyle"
             android:title="Life and style"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/media"
             android:title="Media"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/politics"
             android:title="Politics"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/science"
             android:title="Science"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/sport"
             android:title="Sport"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/technology"
             android:title="Technology"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/travel"
             android:title="Travel"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/weather"
             android:title="Weather"
             android:icon="@drawable/ic_section_sidebar"/>
     </group>
