@@ -4,12 +4,15 @@
     <!--This group contain Editions's labels and its icons-->
     <group android:id="@+id/edition_group">
         <item
+            android:id="@+id/au"
             android:title="Australia Headline"
             android:icon="@drawable/ic_edition_sidebar"/>
         <item
+            android:id="@+id/us"
             android:title="US Headline"
             android:icon="@drawable/ic_edition_sidebar"/>
         <item
+            android:id="@+id/uk"
             android:title="UK Headline"
             android:icon="@drawable/ic_edition_sidebar"/>
     </group>
@@ -17,18 +20,23 @@
     <!--This group contains Sections's labels and its icons-->
     <group android:id="@+id/section_group">
         <item
+            android:id="@+id/artanddesign"
             android:title="Art and design"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/books"
             android:title="Books"
             android:icon="@drawable/ic_section_sidebar" />
         <item
+            android:id="@+id/business"
             android:title="Business"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/culture"
             android:title="Culture"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
+            android:id="@+id/education"
             android:title="Education"
             android:icon="@drawable/ic_section_sidebar"/>
         <item

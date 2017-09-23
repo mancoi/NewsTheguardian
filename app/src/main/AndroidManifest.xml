@@ -32,6 +32,12 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <activity android:name=".Sidebar_OnClick_Activity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.mancoi.news.News_MainActivity" />
+        </activity>
     </application>
 
 </manifest>

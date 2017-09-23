@@ -29,7 +29,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
     private NewsAdapter mAdapter;
 
-    private int INTERNATIONAL_LOADER_ID = 1;
+    private int LOADER_ID = 1;
 
     private String mQuery;
 
@@ -41,8 +41,10 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
         //Set the toolbar to support actionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Search");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -53,7 +55,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
             mQuery = query;
         }
 
-        final ListView newsListItem = (ListView) findViewById(R.id.list_search_result);
+        final ListView newsListItem = (ListView) findViewById(R.id.list);
 
         mAdapter = new NewsAdapter(this, new ArrayList<News>());
         newsListItem.setAdapter(mAdapter);
@@ -63,7 +65,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         // Initialize the loader. Pass in the int ID constant defined above and pass in null for
         // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
         // because this activity implements the LoaderCallbacks interface).
-        loaderManager.initLoader(3, null, this);
+        loaderManager.initLoader(LOADER_ID, null, this);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
                 // then after the user has searched for multiple time and press the BACK button,
                 // we go to the main activity directly but not the search activity before
                 finish();
-                return true;
+                return false;
             }
 
             @Override

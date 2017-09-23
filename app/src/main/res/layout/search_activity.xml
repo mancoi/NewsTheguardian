@@ -45,14 +45,7 @@
 
                 </LinearLayout>
 
-                <ListView
-                    android:id="@+id/list_search_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="@null"
-                    android:dividerHeight="8dp"
-                    android:nestedScrollingEnabled="true"
-                    android:orientation="vertical" />
+                <include layout="@layout/list"/>
 
             </LinearLayout>
 

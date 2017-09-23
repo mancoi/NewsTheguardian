@@ -3,15 +3,20 @@ package com.example.mancoi.news;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 
-public class News_MainActivity extends AppCompatActivity {
+public class News_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     ViewPager viewPager;
     TabLayout tabLayout;
@@ -20,6 +25,8 @@ public class News_MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setNavigationViewListner();
 
         //Set the toolbar to support actionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -53,7 +60,7 @@ public class News_MainActivity extends AppCompatActivity {
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
-        ///////////// Assumes current activity is the searchable activity
+        //Current activity is not the searchable activity, so set it to Search_Activity class
         searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, Search_Activity.class)));
         searchView.setIconifiedByDefault(true); //iconify the widget; expand it by default
 
@@ -73,5 +80,34 @@ public class News_MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+        String group = null;
+        if (item.getGroupId() == R.id.edition_group)
+        {
+            group = "edition";
+        }
+        else {
+            group = "section";
+        }
+        Intent intent = new Intent(this, Sidebar_OnClick_Activity.class);
+        //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
+        intent.putExtra("whatToRetrieve", getResources().getResourceEntryName(item.getItemId()));
+        intent.putExtra("itemName", item.getTitle());
+        intent.putExtra("groupID", group);
+        startActivity(intent);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        return true;
+    }
+
+    private void setNavigationViewListner() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+    }
 }
 
