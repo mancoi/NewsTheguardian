@@ -2,94 +2,94 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--This group contain Editions's labels and its icons-->
-    <group android:id="@+id/edition_group">
+    <group android:id="@+id/edition_group" android:checkableBehavior="single">
         <item
             android:id="@+id/au"
-            android:title="Australia Headline"
+            android:title="@string/australia_headline"
             android:icon="@drawable/ic_edition_sidebar"/>
         <item
             android:id="@+id/us"
-            android:title="US Headline"
+            android:title="@string/us_headline"
             android:icon="@drawable/ic_edition_sidebar"/>
         <item
             android:id="@+id/uk"
-            android:title="UK Headline"
+            android:title="@string/uk_headline"
             android:icon="@drawable/ic_edition_sidebar"/>
     </group>
 
     <!--This group contains Sections's labels and its icons-->
-    <group android:id="@+id/section_group">
+    <group android:id="@+id/section_group" android:checkableBehavior="single">
         <item
             android:id="@+id/artanddesign"
             android:title="@string/art_and_design"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/books"
-            android:title="Books"
+            android:title="@string/books"
             android:icon="@drawable/ic_section_sidebar" />
         <item
             android:id="@+id/business"
-            android:title="Business"
+            android:title="@string/business"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/culture"
-            android:title="Culture"
+            android:title="@string/culture"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/education"
-            android:title="Education"
+            android:title="@string/education"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/environment"
-            android:title="Environment"
+            android:title="@string/environment"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/fashion"
-            android:title="Fashion"
+            android:title="@string/fashion"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/film"
-            android:title="Film"
+            android:title="@string/film"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/football"
-            android:title="Football"
+            android:title="@string/football"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/jobsadvice"
-            android:title="Jobs"
+            android:title="@string/jobs"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/lifeandstyle"
-            android:title="Life and style"
+            android:title="@string/life_and_style"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/media"
-            android:title="Media"
+            android:title="@string/media"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/politics"
-            android:title="Politics"
+            android:title="@string/politics"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/science"
-            android:title="Science"
+            android:title="@string/science"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/sport"
-            android:title="Sport"
+            android:title="@string/sport"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/technology"
-            android:title="Technology"
+            android:title="@string/technology"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/travel"
-            android:title="Travel"
+            android:title="@string/travel"
             android:icon="@drawable/ic_section_sidebar"/>
         <item
             android:id="@+id/weather"
-            android:title="Weather"
+            android:title="@string/weather"
             android:icon="@drawable/ic_section_sidebar"/>
     </group>
 </menu>

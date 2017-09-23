@@ -12,4 +12,24 @@
 
     <string name="search_query">Searched for:</string>
     <string name="art_and_design">Art and design</string>
+    <string name="australia_headline">Australia Headline</string>
+    <string name="us_headline">US Headline</string>
+    <string name="uk_headline">UK Headline</string>
+    <string name="books">Books</string>
+    <string name="business">Business</string>
+    <string name="culture">Culture</string>
+    <string name="education">Education</string>
+    <string name="environment">Environment</string>
+    <string name="fashion">Fashion</string>
+    <string name="film">Film</string>
+    <string name="football">Football</string>
+    <string name="jobs">Jobs</string>
+    <string name="life_and_style">Life and style</string>
+    <string name="media">Media</string>
+    <string name="politics">Politics</string>
+    <string name="science">Science</string>
+    <string name="sport">Sport</string>
+    <string name="technology">Technology</string>
+    <string name="travel">Travel</string>
+    <string name="weather">Weather</string>
 </resources>
