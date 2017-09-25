@@ -1,13 +1,8 @@
 package com.example.mancoi.news;
 
-/**
- * Created by mancoi on 24/08/2017.
- */
-
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,21 +14,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Helper methods related to requesting and receiving Earthquake data from USGS.
+ * Created by mancoi on 25/09/2017.
  */
-public final class QueryUtils {
 
+public final class QueryContent {
     /** Tag for the log messages */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
     /**
      * Query the News dataset and return an {@link News} object to represent a single News.
      */
-    public static List<News> fetchNewsData(String requestURL)
+    public static String fetchNewsData(String requestURL)
     {
 
         String jsonResponse = null;
@@ -49,7 +42,7 @@ public final class QueryUtils {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        List<News> newses = extractNewsFromJson(jsonResponse);
+        String newses = extractNewsFromJson(jsonResponse);
         // Return the list of {@link News}s
         return newses;
     }
@@ -142,14 +135,14 @@ public final class QueryUtils {
      * This class is only meant to hold static variables and methods, which can be accessed
      * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
      */
-    private QueryUtils() {
+    private QueryContent() {
     }
 
     /**
      * Return a list of {@link News} objects that has been built up from
      * parsing a JSON response.
      */
-    public static List<News> extractNewsFromJson(String newsJSON) {
+    public static String extractNewsFromJson(String newsJSON) {
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON))
@@ -157,9 +150,7 @@ public final class QueryUtils {
             return null;
         }
 
-        //Create empty ArrayList to insert news
-        List<News> newses = new ArrayList<News>();
-
+        String body = null;
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
@@ -174,46 +165,13 @@ public final class QueryUtils {
             //Get the results JSONArray
             //If it not exits, it because the array return is the result of what we search,
             //so get it
-            JSONArray results = response.optJSONArray("mostViewed");
-            if (results == null) {
-                results = response.optJSONArray("results");
+            JSONObject content = response.getJSONObject("content");
 
-                if (results == null)
-                {
-                    results = response.optJSONArray("editorsPicks");
-                }
-            }
+            JSONObject fields = content.getJSONObject("fields");
 
-            for(int i = 0; i < results.length(); i++)
-            {
-                // Get a single news at position i within the list of newses
-                JSONObject currentNews = results.getJSONObject(i);
+            body = fields.getString("body");
 
-                //Get the name of the section
-                String section = currentNews.getString("sectionName");
 
-                //Get the public date
-                String date = currentNews.getString("webPublicationDate");
-
-                //Get the apiUrl
-                String apiUrl = currentNews.getString("apiUrl");
-
-                //Get the fields object that contain headline and byline
-                JSONObject fields = currentNews.getJSONObject("fields");
-
-                //Get the headline
-                String headline = fields.getString("headline");
-                //Get the byline
-                //If there is no byline, then it will be set to null
-                String byline = fields.optString("byline");;
-
-                //Get the thumbnail link
-                String thumbnail = fields.optString("thumbnail");
-
-                //Add what we just got to the newses ArrayList
-                newses.add(new News(headline, byline, date, section, apiUrl, thumbnail));
-
-            }
         }
         catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
@@ -222,8 +180,6 @@ public final class QueryUtils {
             Log.e("QueryUtils", "Problem parsing the Earthquake JSON results", e);
         }
 
-        // Return the list of newses
-        return newses;
+        return body;
     }
-
 }

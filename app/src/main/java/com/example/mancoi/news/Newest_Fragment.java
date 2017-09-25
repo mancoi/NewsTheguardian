@@ -1,5 +1,6 @@
 package com.example.mancoi.news;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -7,6 +8,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -48,6 +50,17 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
         loaderManager.initLoader(NEWEST_LOADER_ID, null, this);
 
 
+        newsListItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String apiUrl = mAdapter.getItem(position).getApiUrl();
+
+                Intent intent = new Intent(getContext(), Content_Reader.class);
+                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
+                intent.putExtra("apiUrl", apiUrl);
+                startActivity(intent);
+            }
+        });
 
 
 
