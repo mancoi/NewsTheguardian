@@ -7,11 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import static android.R.attr.description;
 
 /**
  * Created by mancoi on 25/09/2017.
@@ -19,17 +23,12 @@ import android.widget.TextView;
 
 public class Content_Reader extends AppCompatActivity {
 
-    private String mApiUrl= "";
+    private String mApiUrl = "";
     private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
 
-    private TextView mContentTextView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Let's display the progress in the activity title bar, like the
-        // browser app does.
-        getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.content_reader);
 
@@ -38,31 +37,43 @@ public class Content_Reader extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         //setContentView(R.layout.content_reader);
         final WebView webview = (WebView) findViewById(R.id.content_wv);
+        webview.getSettings().setJavaScriptEnabled(true);
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
         mApiUrl = intent.getStringExtra("apiUrl");
 
-        webview.loadUrl(mApiUrl);
-
-        webview.getSettings().setJavaScriptEnabled(true);
-
         final Activity activity = this;
+        activity.setTitle("Article");
 
-        webview.setWebChromeClient(new WebChromeClient(){
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_indicator);
+        progressBar.setIndeterminate(false);
+
+        webview.setWebChromeClient(new WebChromeClient() {
 
             public void onProgressChanged(WebView view, int progress) {
-                ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_indicator);
-                progressBar.setVisibility(View.VISIBLE);
-                progressBar.setIndeterminate(false);
+
                 progressBar.setProgress(progress);
-                if(progress == 100)
+
+                // Activities and WebViews measure progress with different scales.
+                // The progress meter will automatically disappear when we reach 100%
+                if (progress == 100) {
+                    progressBar.setVisibility(View.GONE);
                     activity.setTitle(webview.getTitle());
+                }
             }
         });
 
+
+        webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                Toast.makeText(activity, "Oh no! " + description, Toast.LENGTH_SHORT).show();
+            }
+        });
+        webview.loadUrl(mApiUrl);
     }
+
 }
