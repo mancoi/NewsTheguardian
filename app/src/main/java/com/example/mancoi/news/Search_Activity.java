@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +49,6 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            TextView tv = (TextView) findViewById(R.id.tv_search_query);
-            tv.setText(query);
-
             mQuery = query;
         }
 
@@ -91,7 +87,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
         //Current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconified(true); // Don't expand the widget
+        searchView.setIconified(false); // Don't expand the widget
+        searchView.setQuery(mQuery, false);
         searchView.clearFocus(); //Don't focus to the SearchView when user not want it so
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -104,7 +101,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
                 // then after the user has searched for multiple time and press the BACK button,
                 // we go to the main activity directly but not the search activity before
                 finish();
-                return true;
+                return false;
             }
 
             @Override
