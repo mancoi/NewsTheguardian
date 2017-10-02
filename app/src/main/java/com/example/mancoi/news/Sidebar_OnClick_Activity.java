@@ -8,6 +8,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -57,6 +59,18 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
         // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
         // because this activity implements the LoaderCallbacks interface).
         loaderManager.initLoader(LOADER_ID, null, this);
+
+        newsListItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String apiUrl = mAdapter.getItem(position).getApiUrl();
+
+                Intent intent = new Intent(Sidebar_OnClick_Activity.this, Content_Reader.class);
+                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
+                intent.putExtra("apiUrl", apiUrl);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

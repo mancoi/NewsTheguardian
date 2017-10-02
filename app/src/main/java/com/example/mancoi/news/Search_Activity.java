@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,7 +34,6 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     private int LOADER_ID = 1;
 
     private String mQuery;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +67,18 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
         // because this activity implements the LoaderCallbacks interface).
         loaderManager.initLoader(LOADER_ID, null, this);
+
+        newsListItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String apiUrl = mAdapter.getItem(position).getApiUrl();
+
+                Intent intent = new Intent(Search_Activity.this, Content_Reader.class);
+                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
+                intent.putExtra("apiUrl", apiUrl);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -78,7 +91,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
         //Current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconified(false); // expand the widget
+        searchView.setIconified(true); // Don't expand the widget
         searchView.clearFocus(); //Don't focus to the SearchView when user not want it so
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -91,7 +104,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
                 // then after the user has searched for multiple time and press the BACK button,
                 // we go to the main activity directly but not the search activity before
                 finish();
-                return false;
+                return true;
             }
 
             @Override
