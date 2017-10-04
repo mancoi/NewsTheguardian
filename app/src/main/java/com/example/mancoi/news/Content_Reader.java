@@ -23,8 +23,8 @@ import static android.R.attr.description;
 
 public class Content_Reader extends AppCompatActivity {
 
-    private String mApiUrl = "";
     private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
+    private String mApiUrl = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

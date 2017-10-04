@@ -79,11 +79,9 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
         Uri baseUri = Uri.parse(HTTP_REQUEST);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
-        if(mGroupId.equals("edition"))
-        {
+        if (mGroupId.equals("edition")) {
             uriBuilder.appendPath(mIdToRetrieve);
-        }
-        else {
+        } else {
             uriBuilder.appendPath("search");
             uriBuilder.appendQueryParameter("section", mIdToRetrieve);
         }

@@ -1,7 +1,7 @@
 package com.example.mancoi.news;
 
-import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
 
 import java.util.List;
 
@@ -27,8 +27,7 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
     public List<News> loadInBackground() {
 
         //Don't perform the request if the URL is null
-        if(mUrl == null)
-        {
+        if (mUrl == null) {
             return null;
         }
 

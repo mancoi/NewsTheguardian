@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/parent"
     android:orientation="horizontal"
-    android:paddingRight="8dp"
     android:paddingEnd="8dp"
-    android:paddingStart="0dp"
-    android:paddingLeft="0dp">
+    android:paddingLeft="0dp"
+    android:paddingRight="8dp"
+    android:paddingStart="0dp">
 
-        <ImageView
-            android:id="@+id/imgView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/app_name"
-            android:scaleType="centerCrop"/>
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:id="@+id/headline"
@@ -37,17 +36,17 @@
                 android:id="@+id/date_tv"
                 style="@style/subTextView"
                 android:layout_width="0dp"
-                android:gravity="center_vertical"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
                 tools:text="21 AUG, 2017" />
 
             <TextView
                 android:id="@+id/section_tv"
                 style="@style/subTextView"
                 android:layout_width="0dp"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:gravity="end|center_vertical"
                 android:textColor="#FF9800"
                 tools:text="tech" />
@@ -57,18 +56,18 @@
         <TextView
             android:id="@+id/title_tv"
             style="@style/titleTextView"
-            android:layout_below="@id/date_and_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/date_and_section"
             tools:text="Ex-intelligence chief: Trump's access to nuclear codes is 'pretty damn scary' " />
 
         <TextView
             android:id="@+id/author_tv"
-            android:layout_below="@id/title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/title_tv"
             android:gravity="bottom|end"
             android:textSize="12sp"
             tools:text="Brian Logan in Edinburgh" />

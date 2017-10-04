@@ -27,14 +27,23 @@ import java.util.List;
  */
 public final class QueryUtils {
 
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+
+    /**
+     * Create a private constructor because no one should ever create a {@link QueryUtils} object.
+     * This class is only meant to hold static variables and methods, which can be accessed
+     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
+     */
+    private QueryUtils() {
+    }
 
     /**
      * Query the News dataset and return an {@link News} object to represent a single News.
      */
-    public static List<News> fetchNewsData(String requestURL)
-    {
+    public static List<News> fetchNewsData(String requestURL) {
 
         String jsonResponse = null;
 
@@ -57,15 +66,11 @@ public final class QueryUtils {
     /**
      * Returns new URL object from the given string URL.
      */
-    private static URL createURL(String stringURL)
-    {
+    private static URL createURL(String stringURL) {
         URL url = null;
-        try
-        {
+        try {
             url = new URL(stringURL);
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Error with creating URL", e);
         }
         return url;
@@ -119,10 +124,9 @@ public final class QueryUtils {
      * Convert the {@link InputStream} into a String which contains the
      * whole JSON response from the server.
      */
-    private static String readFromStream (InputStream inputStream) throws IOException {
+    private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
-        if (inputStream != null)
-        {
+        if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("Utf-8"));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line = bufferedReader.readLine();
@@ -136,15 +140,6 @@ public final class QueryUtils {
         return output.toString();
     }
 
-
-    /**
-     * Create a private constructor because no one should ever create a {@link QueryUtils} object.
-     * This class is only meant to hold static variables and methods, which can be accessed
-     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
-     */
-    private QueryUtils() {
-    }
-
     /**
      * Return a list of {@link News} objects that has been built up from
      * parsing a JSON response.
@@ -152,8 +147,7 @@ public final class QueryUtils {
     public static List<News> extractNewsFromJson(String newsJSON) {
 
         // If the JSON string is empty or null, then return early.
-        if (TextUtils.isEmpty(newsJSON))
-        {
+        if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
 
@@ -163,8 +157,7 @@ public final class QueryUtils {
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
-        try
-        {
+        try {
             //Create JSON object from the response String
             JSONObject root = new JSONObject(newsJSON);
 
@@ -178,14 +171,12 @@ public final class QueryUtils {
             if (results == null) {
                 results = response.optJSONArray("results");
 
-                if (results == null)
-                {
+                if (results == null) {
                     results = response.optJSONArray("editorsPicks");
                 }
             }
 
-            for(int i = 0; i < results.length(); i++)
-            {
+            for (int i = 0; i < results.length(); i++) {
                 // Get a single news at position i within the list of newses
                 JSONObject currentNews = results.getJSONObject(i);
 
@@ -205,7 +196,8 @@ public final class QueryUtils {
                 String headline = fields.getString("headline");
                 //Get the byline
                 //If there is no byline, then it will be set to null
-                String byline = fields.optString("byline");;
+                String byline = fields.optString("byline");
+                ;
 
                 //Get the thumbnail link
                 String thumbnail = fields.optString("thumbnail");
@@ -214,8 +206,7 @@ public final class QueryUtils {
                 newses.add(new News(headline, byline, date, section, apiUrl, thumbnail));
 
             }
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message
             // with the message from the exception.

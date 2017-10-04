@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/list"/>
+    <include layout="@layout/list" />
 
     <!-- Empty view is only visible when the list has no items. -->
     <TextView
@@ -19,10 +19,10 @@
     <!-- Loading indicator is only shown before the first load -->
     <ProgressBar
         android:id="@+id/loading_indicator"
+        style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        style="@style/Widget.AppCompat.ProgressBar"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -18,16 +18,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class International_Fragment extends Fragment implements LoaderManager.LoaderCallbacks<List<News>>{
-
-    private String NEWS_HTTP_REQUEST =
-            "http://content.guardianapis.com/international?show-editors-picks=true&show-fields=headline,byline,thumbnail&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
-
-    private NewsAdapter mAdapter;
-
-    private int INTERNATIONAL_LOADER_ID = 1;
+public class International_Fragment extends Fragment implements LoaderManager.LoaderCallbacks<List<News>> {
 
     View rootView;
+    private String NEWS_HTTP_REQUEST =
+            "http://content.guardianapis.com/international?show-editors-picks=true&show-fields=headline,byline,thumbnail&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+    private NewsAdapter mAdapter;
+    private int INTERNATIONAL_LOADER_ID = 1;
 
     public International_Fragment() {
         // Required empty public constructor

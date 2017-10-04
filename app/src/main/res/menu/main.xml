@@ -6,9 +6,9 @@
 
     <item
         android:id="@+id/search_button"
-        android:title="@string/search_title"
         android:icon="@drawable/ic_search_but"
         android:orderInCategory="1"
+        android:title="@string/search_title"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
 </menu>

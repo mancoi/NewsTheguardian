@@ -16,8 +16,7 @@ public class News {
 
     private String mUrl;
 
-    public News(String title, String author, String date, String section, @NonNull String apiUrl)
-    {
+    public News(String title, String author, String date, String section, @NonNull String apiUrl) {
         mTitle = title;
         mAuthor = author;
         mDate = date;
@@ -25,8 +24,7 @@ public class News {
         mUrl = apiUrl;
     }
 
-    public News(String title, String author, String date, String section, @NonNull String apiUrl, String imgUrl)
-    {
+    public News(String title, String author, String date, String section, @NonNull String apiUrl, String imgUrl) {
         mTitle = title;
         mAuthor = author;
         mDate = date;
@@ -35,33 +33,27 @@ public class News {
         mImgUrl = imgUrl;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getAuthor()
-    {
+    public String getAuthor() {
         return mAuthor;
     }
 
-    public String getDate()
-    {
+    public String getDate() {
         return mDate;
     }
 
-    public String getSection()
-    {
+    public String getSection() {
         return mSection;
     }
 
-    public String getImgUrl()
-    {
+    public String getImgUrl() {
         return mImgUrl;
     }
 
-    public String getApiUrl()
-    {
+    public String getApiUrl() {
         return mUrl;
     }
 }

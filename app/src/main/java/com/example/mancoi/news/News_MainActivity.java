@@ -16,7 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class News_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class News_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ViewPager viewPager;
     TabLayout tabLayout;
@@ -84,11 +84,9 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
     public boolean onNavigationItemSelected(MenuItem item) {
 
         String group = null;
-        if (item.getGroupId() == R.id.edition_group)
-        {
+        if (item.getGroupId() == R.id.edition_group) {
             group = "edition";
-        }
-        else {
+        } else {
             group = "section";
         }
         Intent intent = new Intent(this, Sidebar_OnClick_Activity.class);

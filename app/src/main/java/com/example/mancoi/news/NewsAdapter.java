@@ -35,8 +35,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         View listItemView = convertView;
 
-        if(listItemView == null)
-        {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.news_list_item, parent, false);
         }
 
@@ -83,25 +82,21 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         //Check if there is an image or not, it not, leave it as default
         //Not show broken image here because it's not an error
-        if (!TextUtils.isEmpty(imgUrl))
-        {
+        if (!TextUtils.isEmpty(imgUrl)) {
             // Display the thumbnail of the current News in that TextView
             Picasso.with(getContext())
                     .load(currentNews.getImgUrl())
                     .error(R.drawable.img_broken)
                     .placeholder(R.drawable.img_holder)
                     .into(imgView);
-        }
-        else
-        {
+        } else {
             imgView.setImageResource(R.drawable.img_no_image);
         }
 
         return listItemView;
     }
 
-    private String formatDate(Date dateObject)
-    {
+    private String formatDate(Date dateObject) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy, HH:mm");
         dateFormat.setTimeZone(TimeZone.getDefault());
         return dateFormat.format(dateObject);

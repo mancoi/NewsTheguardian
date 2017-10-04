@@ -20,12 +20,9 @@ public class Headline_Adapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 0)
-        {
+        if (position == 0) {
             return new Newest_Fragment();
-        }
-        else
-        {
+        } else {
             return new International_Fragment();
         }
     }

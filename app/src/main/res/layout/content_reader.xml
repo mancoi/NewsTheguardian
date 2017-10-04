@@ -4,22 +4,28 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/tool_bar" android:id="@+id/toolbar"/>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/tool_bar" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <WebView
         android:id="@+id/content_wv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        />
+        android:layout_below="@id/appBarLayout" />
 
     <ProgressBar
         android:id="@+id/loading_indicator"
-        android:layout_below="@id/toolbar"
+        style="?android:progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="4dp"
+        android:layout_below="@id/appBarLayout"
         android:layout_gravity="bottom"
-        style="?android:progressBarStyleHorizontal"
-        android:progressDrawable="@drawable/custom_progress_bar"/>
+        android:progressDrawable="@drawable/custom_progress_bar" />
 
 </RelativeLayout>
