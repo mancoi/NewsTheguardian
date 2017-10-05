@@ -143,4 +143,10 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         mAdapter.clear();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View rootView = findViewById(R.id.root_layout);
+        rootView.requestFocus();
+    }
 }

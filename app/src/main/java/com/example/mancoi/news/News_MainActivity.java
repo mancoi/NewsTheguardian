@@ -21,6 +21,8 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
     ViewPager viewPager;
     TabLayout tabLayout;
 
+    SearchView mSearchView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,20 +56,33 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Collapse the SearchView if it is expanding
+        // Such as when user type something to the SearchView and leave it there,
+        // when the user back to this main activity, the SearchView should be collapsed already
+        if (mSearchView != null && !mSearchView.isIconified())
+        {
+            mSearchView.onActionViewCollapsed();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
 
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final SearchView searchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
+        mSearchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
         //Current activity is not the searchable activity, so set it to Search_Activity class
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, Search_Activity.class)));
-        searchView.setIconifiedByDefault(true); //iconify the widget; expand it by default
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, Search_Activity.class)));
+        mSearchView.setIconifiedByDefault(true); //iconify the widget; expand it by default
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchView.onActionViewCollapsed();
+                mSearchView.onActionViewCollapsed();
                 return false;
             }
 

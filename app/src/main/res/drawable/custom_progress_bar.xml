@@ -9,7 +9,7 @@
                 android:centerColor="@android:color/transparent"
                 android:centerY="1.0"
                 android:endColor="@android:color/transparent"
-                android:startColor="@android:color/transparent" />
+                android:startColor="@color/colorPrimaryDark" />
         </shape>
     </item>
 
@@ -19,10 +19,10 @@
             <shape>
                 <gradient
                     android:angle="270"
-                    android:centerColor="@color/colorPrimary"
+                    android:centerColor="@android:color/white"
                     android:centerY="1.0"
-                    android:endColor="@color/colorPrimaryDark"
-                    android:startColor="@color/colorAccent" />
+                    android:endColor="@android:color/white"
+                    android:startColor="@android:color/white" />
             </shape>
         </clip>
     </item>
