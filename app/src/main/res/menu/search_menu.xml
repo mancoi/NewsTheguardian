@@ -15,12 +15,17 @@
         android:id="@+id/filter_ic"
         android:icon="@drawable/ic_filter"
         android:title="@string/filter_by"
-        app:showAsAction="always" >
+        app:showAsAction="always">
         <menu>
-            <item android:title="@string/newest"
-                android:id="@+id/newest"/>
-            <item android:title="@string/oldest"/>
-            <item android:title="@string/relevance"/>
+            <item
+                android:id="@+id/newest"
+                android:title="@string/newest" />
+            <item
+                android:id="@+id/oldest"
+                android:title="@string/oldest" />
+            <item
+                android:id="@+id/relevance"
+                android:title="@string/relevance" />
         </menu>
     </item>
 

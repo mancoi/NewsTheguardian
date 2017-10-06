@@ -14,9 +14,11 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,12 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     private int LOADER_ID = 1;
 
     private String mQuery;
+
+    // Because the API request with the parameter "q" will return results that
+    // have been order by "relevance" by default, we set it to "relevance" at first.
+    // So when user performed a search then set the order to "relevance", we don't have
+    // to restart the Loader all again
+    private String mOrderBy = "relevance";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +102,11 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         searchView.setIconified(false); // Expand the widget
         searchView.setQuery(mQuery, false);
 
+        // Calculate the number of pixels according to a given value in the DIP metrics
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, getResources().getDisplayMetrics());
+        // Set max width for the SearchView, if we don't do this,
+        // when the SearchView expand, it will take up the whole Toolbar's width
+        // and hide other menu items
         searchView.setMaxWidth(px);
 
         searchView.clearFocus(); //Don't focus to the SearchView when user not want it so
@@ -121,6 +133,37 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int itemId = item.getItemId();
+
+        // If user just clicked on the filter icon, no need to do anything.
+        if (itemId == R.id.filter_ic)
+            return false;
+
+        String itemIdString = getResources().getResourceEntryName(itemId);
+
+        // Check the current order, if user have selected the same order, then we
+        // no need to do anything else. Show the Toast message to inform user about that.
+        // Else, set the order to what user have selected and restart the Loader
+        // to show results with that order
+        if (!mOrderBy.equals(itemIdString))
+        {
+            mOrderBy = itemIdString;
+            getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+            Toast.makeText(this, mOrderBy + " results", Toast.LENGTH_SHORT).show();
+            return super.onOptionsItemSelected(item);
+        }
+        else
+        {
+            Toast.makeText(this, "Showing " + mOrderBy + " results", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+
+
+    @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
 
         Uri baseUri = Uri.parse(HTTP_REQUEST);
@@ -128,7 +171,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
         uriBuilder.appendQueryParameter("q", mQuery);
         uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail");
-        uriBuilder.appendQueryParameter("order-by", "relevance");
+        uriBuilder.appendQueryParameter("order-by", mOrderBy);
         uriBuilder.appendQueryParameter("api-key", API_KEY);
 
         return new NewsLoader(this, uriBuilder.toString());
@@ -136,10 +179,10 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
-        //Clear the adapter of previous earthquake data
+        //Clear the adapter of previous news data
         mAdapter.clear();
 
-        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // If there is a valid list of {@link News}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);

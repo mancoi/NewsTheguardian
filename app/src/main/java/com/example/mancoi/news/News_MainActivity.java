@@ -100,7 +100,7 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        String group = null;
+        String group;
         if (item.getGroupId() == R.id.edition_group) {
             group = "edition";
         } else {
@@ -125,4 +125,3 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
 
     }
 }
-
