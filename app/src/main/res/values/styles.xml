@@ -8,12 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/NewsAppBarStyle</item>
         <item name="android:windowContentOverlay">@null</item>
-
     </style>
 
     <!--Style the text and menu icon of toolbar-->
     <style name="toolBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:textColorPrimary">#fff</item>
         <item name="android:tint">#FFF</item>
         <!--Change the SearchView's cursor color-->
         <item name="android:textCursorDrawable">@drawable/cursor</item>

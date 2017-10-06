@@ -32,4 +32,8 @@
     <string name="technology">Technology</string>
     <string name="travel">Travel</string>
     <string name="weather">Weather</string>
+    <string name="filter_by">Filter by</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="relevance">Relevance</string>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".News_MainActivity">
+
+    <item
+        android:id="@+id/search_button"
+        android:icon="@drawable/ic_search_but"
+        android:title="@string/search_title"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/filter_ic"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter_by"
+        app:showAsAction="always" >
+        <menu>
+            <item android:title="@string/newest"
+                android:id="@+id/newest"/>
+            <item android:title="@string/oldest"/>
+            <item android:title="@string/relevance"/>
+        </menu>
+    </item>
+
+</menu>
