@@ -38,6 +38,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
     private String mQuery;
 
+    private View rootView;
+
     // Because the API request with the parameter "q" will return results that
     // have been order by "relevance" by default, we set it to "relevance" at first.
     // So when user performed a search then set the order to "relevance", we don't have
@@ -87,6 +89,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
                 startActivity(intent);
             }
         });
+
+        rootView = findViewById(R.id.root_layout);
     }
 
     @Override
@@ -134,6 +138,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        rootView.requestFocus();
 
         int itemId = item.getItemId();
 
@@ -197,7 +203,6 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     @Override
     protected void onResume() {
         super.onResume();
-        View rootView = findViewById(R.id.root_layout);
         rootView.requestFocus();
     }
 }
