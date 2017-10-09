@@ -1,22 +1,19 @@
 package com.example.mancoi.news;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import static android.R.attr.description;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by mancoi on 25/09/2017.
@@ -24,58 +21,113 @@ import static android.R.attr.description;
 
 public class Content_Reader extends AppCompatActivity {
 
-    private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
-    private String mApiUrl = "";
+    private final String HTTP_REQUEST_PARAM =
+            "?shouldHideAdverts=true&show-fields=thumbnail,trailText,body&show-elements=all&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.content_reader);
+        setContentView(R.layout.read_content);
 
         //Set the toolbar to support actionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        this.setTitle("Article");
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //setContentView(R.layout.content_reader);
-        final WebView webview = (WebView) findViewById(R.id.content_wv);
-        webview.getSettings().setJavaScriptEnabled(true);
-
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
-        mApiUrl = intent.getStringExtra("apiUrl");
+        String mApiUrl = intent.getStringExtra("apiUrl");
+        mApiUrl += HTTP_REQUEST_PARAM;
 
-        final Activity activity = this;
-        activity.setTitle("Article");
+        //Get the title and set it to headline_tv
+        TextView title = (TextView) findViewById(R.id.headline_tv);
+        title.setText(intent.getStringExtra("headline"));
+        //Get the author and set it to byline_tv
+        TextView byline = (TextView) findViewById(R.id.byline_tv);
+        byline.setText(intent.getStringExtra("byline"));
 
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_indicator);
-        progressBar.setIndeterminate(false);
+        //Get the thumbnail's Url, load it and set it to thumbnail_imgView
+        ImageView thumbnail = (ImageView) findViewById(R.id.thumbnail_imgView);
+        String thumbnailUrl = intent.getStringExtra("thumbnail");
+        //Check if there is an image or not, it not, leave it as default
+        //Not show broken image here because it's not an error
+        if (!TextUtils.isEmpty(thumbnailUrl)) {
+            // Display the thumbnail of the current News in that TextView
+            Picasso.with(this)
+                    .load(thumbnailUrl)
+                    .error(R.drawable.img_broken)
+                    .placeholder(R.drawable.img_holder)
+                    .into(thumbnail);
+        } else {
+            thumbnail.setVisibility(View.GONE);
+        }
 
-        webview.setWebChromeClient(new WebChromeClient() {
+        NewsAsyncTask newsAsyncTask = new NewsAsyncTask();
+        newsAsyncTask.execute(mApiUrl);
 
-            public void onProgressChanged(WebView view, int progress) {
-
-                progressBar.setProgress(progress);
-
-                // Activities and WebViews measure progress with different scales.
-                // The progress meter will automatically disappear when we reach 100%
-                if (progress == 100) {
-                    progressBar.setVisibility(View.GONE);
-                    activity.setTitle(webview.getTitle());
-                }
-            }
-        });
-
-
-        webview.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Toast.makeText(activity, "Oh no! " + description, Toast.LENGTH_SHORT).show();
-            }
-        });
-        webview.loadUrl(mApiUrl);
     }
+
+    /**
+     * {@link AsyncTask} to perform the network request on a background thread, and then
+     * update the UI with the list of earthquakes in the response.
+     *
+     * AsyncTask has three generic parameters: the input type, a type used for progress updates, and
+     * an output type. Our task will take a String URL, and return an Earthquake. We won't do
+     * progress updates, so the second generic is just Void.
+     *
+     * We'll only override two of the methods of AsyncTask: doInBackground() and onPostExecute().
+     * The doInBackground() method runs on a background thread, so it can run long-running code
+     * (like network activity), without interfering with the responsiveness of the app.
+     * Then onPostExecute() is passed the result of doInBackground() method, but runs on the
+     * UI thread, so it can use the produced data to update the UI.
+     */
+    private class NewsAsyncTask extends AsyncTask<String, Void, NewsContent> {
+
+        /**
+         * This method runs on a background thread and performs the network request.
+         * We should not update the UI from a background thread, so we return a list of
+         * {@link NewsContent}s as the result.
+         */
+        @Override
+        protected NewsContent doInBackground(String... urls) {
+
+            // Don't perform the request if there are no URLs, or the first URL is null.
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
+            }
+
+            NewsContent newsContent = QueryContent.fetchNewsData(urls[0]);
+            return newsContent;
+
+
+        }
+
+        /**
+         * This method runs on the main UI thread after the background work has been
+         * completed. This method receives as input, the return value from the doInBackground()
+         * method. First we clear out the adapter, to get rid of earthquake data from a previous
+         * query to USGS. Then we update the adapter with the new list of earthquakes,
+         * which will trigger the ListView to re-populate its list items.
+         */
+        @Override
+        protected void onPostExecute(final NewsContent data) {
+
+            // If there is a valid list of {@link News}s, then add them to the adapter's
+            // data set. This will trigger the content to update.
+            if (data != null) {
+                TextView trailText = (TextView) findViewById(R.id.trailText_tv);
+                trailText.setText(Html.fromHtml(data.getTrailText()));
+
+                TextView body = (TextView) findViewById(R.id.body_tv);
+                body.setText(Html.fromHtml(data.getBody()));
+            }
+
+        }
+
+    }
+
 
 }

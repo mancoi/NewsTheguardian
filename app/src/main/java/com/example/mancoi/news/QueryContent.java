@@ -36,7 +36,7 @@ public final class QueryContent {
     /**
      * Query the News dataset and return an {@link News} object to represent a single News.
      */
-    public static String fetchNewsData(String requestURL) {
+    public static NewsContent fetchNewsData(String requestURL) {
 
         String jsonResponse = null;
 
@@ -51,7 +51,7 @@ public final class QueryContent {
         }
 
         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        String newses = extractNewsFromJson(jsonResponse);
+        NewsContent newses = extractNewsFromJson(jsonResponse);
         // Return the list of {@link News}s
         return newses;
     }
@@ -137,14 +137,14 @@ public final class QueryContent {
      * Return a list of {@link News} objects that has been built up from
      * parsing a JSON response.
      */
-    public static String extractNewsFromJson(String newsJSON) {
+    public static NewsContent extractNewsFromJson(String newsJSON) {
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(newsJSON)) {
             return null;
         }
 
-        String body = null;
+        NewsContent newsContent = null;
         // Try to parse the JSON response string. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
         // Catch the exception so the app doesn't crash, and print the error message to the logs.
@@ -160,10 +160,17 @@ public final class QueryContent {
             //so get it
             JSONObject content = response.getJSONObject("content");
 
+            //Get the web url or this news
+            String webUrl = content.getString("webUrl");
+
             JSONObject fields = content.getJSONObject("fields");
 
-            body = fields.getString("body");
+            //Get the News's trail text
+            String trailText = fields.getString("trailText");
+            //Get the News's body
+            String body = fields.getString("body");
 
+            newsContent = new NewsContent(trailText, webUrl, body);
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
@@ -172,6 +179,6 @@ public final class QueryContent {
             Log.e("QueryUtils", "Problem parsing the Earthquake JSON results", e);
         }
 
-        return body;
+        return newsContent;
     }
 }
