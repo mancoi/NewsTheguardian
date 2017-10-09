@@ -187,7 +187,7 @@ public final class QueryUtils {
                 String date = currentNews.getString("webPublicationDate");
 
                 //Get the apiUrl
-                String apiUrl = currentNews.getString("webUrl");
+                String apiUrl = currentNews.getString("apiUrl");
 
                 //Get the fields object that contain headline and byline
                 JSONObject fields = currentNews.getJSONObject("fields");
