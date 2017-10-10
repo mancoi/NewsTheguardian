@@ -4,6 +4,8 @@ package com.example.mancoi.news;
  * Created by mancoi on 24/08/2017.
  */
 
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -186,8 +188,8 @@ public final class QueryUtils {
                 //Get the public date
                 String date = currentNews.getString("webPublicationDate");
 
-                //Get the apiUrl
-                String apiUrl = currentNews.getString("apiUrl");
+                //Get the webUrl
+                String webUrl = currentNews.getString("webUrl");
 
                 //Get the fields object that contain headline and byline
                 JSONObject fields = currentNews.getJSONObject("fields");
@@ -197,13 +199,14 @@ public final class QueryUtils {
                 //Get the byline
                 //If there is no byline, then it will be set to null
                 String byline = fields.optString("byline");
-                ;
+                //Get the trailText
+                String trailText = fields.optString("trailText");
 
                 //Get the thumbnail link
                 String thumbnail = fields.optString("thumbnail");
 
                 //Add what we just got to the newses ArrayList
-                newses.add(new News(headline, byline, date, section, apiUrl, thumbnail));
+                newses.add(new News(headline, byline, trailText, date, section, webUrl, thumbnail));
 
             }
         } catch (JSONException e) {
@@ -215,6 +218,17 @@ public final class QueryUtils {
 
         // Return the list of newses
         return newses;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
     }
 
 }

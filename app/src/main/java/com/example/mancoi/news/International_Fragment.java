@@ -54,7 +54,7 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
 
                 News newsExtra = mAdapter.getItem(position);
                 assert newsExtra != null;
-                String apiUrl = newsExtra.getApiUrl();
+                String apiUrl = newsExtra.getWebUrl();
                 String title = newsExtra.getTitle();
                 String author = newsExtra.getAuthor();
                 String thumbnail = newsExtra.getImgUrl();

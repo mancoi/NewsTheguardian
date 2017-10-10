@@ -21,7 +21,7 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
 
     View rootView;
     private String NEWS_HTTP_REQUEST =
-            "http://content.guardianapis.com/search?show-fields=headline,byline,thumbnail&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+            "http://content.guardianapis.com/search?show-fields=headline,byline,thumbnail,trailText&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
     private NewsAdapter mAdapter;
     private int NEWEST_LOADER_ID = 1;
 
@@ -53,16 +53,22 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
 
                 News newsExtra = mAdapter.getItem(position);
                 assert newsExtra != null;
-                String apiUrl = newsExtra.getApiUrl();
+
+                String apiUrl = newsExtra.getWebUrl();
                 String title = newsExtra.getTitle();
                 String author = newsExtra.getAuthor();
                 String thumbnail = newsExtra.getImgUrl();
+                String trailText = newsExtra.getTrailText();
+
                 Intent intent = new Intent(getContext(), Content_Reader.class);
-                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
+
+                //Get the id string of the item's id, then pass it to Content_Reader Activity
                 intent.putExtra("apiUrl", apiUrl);
                 intent.putExtra("headline", title);
                 intent.putExtra("byline", author);
                 intent.putExtra("thumbnail", thumbnail);
+                intent.putExtra("trailText", trailText);
+
                 startActivity(intent);
             }
         });

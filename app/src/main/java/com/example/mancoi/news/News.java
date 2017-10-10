@@ -11,22 +11,16 @@ public class News {
     private String mDate;
     private String mTitle;
     private String mAuthor;
+    private String mTrailText;
     private String mSection;
     private String mImgUrl;
 
     private String mUrl;
 
-    public News(String title, String author, String date, String section, @NonNull String apiUrl) {
+    public News(String title, String author, String trailText, String date, String section, @NonNull String apiUrl, String imgUrl) {
         mTitle = title;
         mAuthor = author;
-        mDate = date;
-        mSection = section;
-        mUrl = apiUrl;
-    }
-
-    public News(String title, String author, String date, String section, @NonNull String apiUrl, String imgUrl) {
-        mTitle = title;
-        mAuthor = author;
+        mTrailText = trailText;
         mDate = date;
         mSection = section;
         mUrl = apiUrl;
@@ -53,7 +47,11 @@ public class News {
         return mImgUrl;
     }
 
-    public String getApiUrl() {
+    public String getWebUrl() {
         return mUrl;
+    }
+
+    public String getTrailText() {
+        return mTrailText;
     }
 }

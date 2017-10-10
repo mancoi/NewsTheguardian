@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionBarStyle">@style/NewsAppBarStyle</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
     </style>
 
     <!--Style the text and menu icon of toolbar-->

@@ -83,7 +83,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 News newsExtra = mAdapter.getItem(position);
                 assert newsExtra != null;
-                String apiUrl = newsExtra.getApiUrl();
+                String apiUrl = newsExtra.getWebUrl();
                 String title = newsExtra.getTitle();
                 String author = newsExtra.getAuthor();
                 String thumbnail = newsExtra.getImgUrl();

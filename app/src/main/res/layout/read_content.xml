@@ -61,29 +61,23 @@
 
                 <TextView
                     android:id="@+id/trailText_tv"
-                    android:background="@android:color/white"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/headline_byline_container"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
                     android:padding="8dp" />
 
-                <!--<WebView-->
-                    <!--android:id="@+id/body_wv"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_below="@id/trailText_tv"-->
-                    <!--android:padding="8dp"-->
-                    <!--android:textSize="18sp" />-->
-
-                <TextView
-                    android:id="@+id/body_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/trailText_tv"
-                    android:textColor="@android:color/black"
-                    android:background="@android:color/white"
+                <Button
+                    android:id="@+id/read_more_but"
+                    android:layout_width="240dp"
+                    android:layout_height="64dp"
+                    android:layout_marginTop="16dp"
                     android:padding="8dp"
-                    android:textSize="18sp" />
+                    android:text="@string/read_more"
+                    android:layout_below="@id/trailText_tv"
+                    android:layout_centerHorizontal="true"/>
 
             </RelativeLayout>
 
