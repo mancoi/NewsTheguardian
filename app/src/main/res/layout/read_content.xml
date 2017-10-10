@@ -26,6 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorAccent"
+                    android:adjustViewBounds="true"
                     android:contentDescription="This is a fucking thumbnail"
                     android:scaleType="centerCrop"
                     tools:src="@drawable/img500"/>
@@ -60,16 +61,27 @@
 
                 <TextView
                     android:id="@+id/trailText_tv"
+                    android:background="@android:color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/headline_byline_container"
                     android:padding="8dp" />
+
+                <!--<WebView-->
+                    <!--android:id="@+id/body_wv"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@id/trailText_tv"-->
+                    <!--android:padding="8dp"-->
+                    <!--android:textSize="18sp" />-->
 
                 <TextView
                     android:id="@+id/body_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/trailText_tv"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/white"
                     android:padding="8dp"
                     android:textSize="18sp" />
 

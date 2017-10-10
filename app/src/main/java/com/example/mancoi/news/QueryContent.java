@@ -1,5 +1,7 @@
 package com.example.mancoi.news;
 
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -180,5 +182,16 @@ public final class QueryContent {
         }
 
         return newsContent;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html, PicassoImageGetter imageGetter){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY, imageGetter, null);
+        } else {
+            result = Html.fromHtml(html, imageGetter, null);
+        }
+        return result;
     }
 }

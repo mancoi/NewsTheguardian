@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,13 +22,16 @@ import com.squareup.picasso.Picasso;
 public class Content_Reader extends AppCompatActivity {
 
     private final String HTTP_REQUEST_PARAM =
-            "?shouldHideAdverts=true&show-fields=thumbnail,trailText,body&show-elements=all&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+            "?shouldHideAdverts=true&show-fields=thumbnail,trailText,body&show-elements=image&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+    private WebView webview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.read_content);
+
+        //webview = new WebView(this);
 
         //Set the toolbar to support actionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -41,6 +44,9 @@ public class Content_Reader extends AppCompatActivity {
         Intent intent = getIntent();
         String mApiUrl = intent.getStringExtra("apiUrl");
         mApiUrl += HTTP_REQUEST_PARAM;
+        //Execute the AsyncTask to retrieve data
+        NewsAsyncTask newsAsyncTask = new NewsAsyncTask();
+        newsAsyncTask.execute(mApiUrl);
 
         //Get the title and set it to headline_tv
         TextView title = (TextView) findViewById(R.id.headline_tv);
@@ -65,19 +71,16 @@ public class Content_Reader extends AppCompatActivity {
             thumbnail.setVisibility(View.GONE);
         }
 
-        NewsAsyncTask newsAsyncTask = new NewsAsyncTask();
-        newsAsyncTask.execute(mApiUrl);
-
     }
 
     /**
      * {@link AsyncTask} to perform the network request on a background thread, and then
      * update the UI with the list of earthquakes in the response.
-     *
+     * <p>
      * AsyncTask has three generic parameters: the input type, a type used for progress updates, and
      * an output type. Our task will take a String URL, and return an Earthquake. We won't do
      * progress updates, so the second generic is just Void.
-     *
+     * <p>
      * We'll only override two of the methods of AsyncTask: doInBackground() and onPostExecute().
      * The doInBackground() method runs on a background thread, so it can run long-running code
      * (like network activity), without interfering with the responsiveness of the app.
@@ -119,10 +122,15 @@ public class Content_Reader extends AppCompatActivity {
             // data set. This will trigger the content to update.
             if (data != null) {
                 TextView trailText = (TextView) findViewById(R.id.trailText_tv);
-                trailText.setText(Html.fromHtml(data.getTrailText()));
+                trailText.setText(QueryContent.fromHtml(data.getTrailText(),null));
 
                 TextView body = (TextView) findViewById(R.id.body_tv);
-                body.setText(Html.fromHtml(data.getBody()));
+
+                PicassoImageGetter imageGetter = new PicassoImageGetter(body);
+                body.setText(QueryContent.fromHtml(data.getBody(), imageGetter));
+//                webview = (WebView) findViewById(R.id.body_wv);
+//                webview.loadData(data.getBody(), "text/html", null);
+
             }
 
         }
