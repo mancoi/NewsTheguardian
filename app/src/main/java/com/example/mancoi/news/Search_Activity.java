@@ -82,18 +82,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 News newsExtra = mAdapter.getItem(position);
-                assert newsExtra != null;
-                String apiUrl = newsExtra.getWebUrl();
-                String title = newsExtra.getTitle();
-                String author = newsExtra.getAuthor();
-                String thumbnail = newsExtra.getImgUrl();
-                Intent intent = new Intent(Search_Activity.this, Content_Reader.class);
-                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
-                intent.putExtra("apiUrl", apiUrl);
-                intent.putExtra("headline", title);
-                intent.putExtra("byline", author);
-                intent.putExtra("thumbnail", thumbnail);
-                startActivity(intent);
+
+                QueryUtils.StartIntent(Search_Activity.this, newsExtra);
             }
         });
 
@@ -183,7 +173,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("q", mQuery);
-        uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail");
+        uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail,trailText");
         uriBuilder.appendQueryParameter("order-by", mOrderBy);
         uriBuilder.appendQueryParameter("api-key", API_KEY);
 

@@ -29,6 +29,7 @@ public class PicassoImageGetter implements Html.ImageGetter {
     @Override
     public Drawable getDrawable(String source) {
         BitmapDrawablePlaceHolder drawable = new BitmapDrawablePlaceHolder();
+
         Picasso.with(textView.getContext())
                 .load(source)
                 .into(drawable);
@@ -48,12 +49,25 @@ public class PicassoImageGetter implements Html.ImageGetter {
 
         public void setDrawable(Drawable drawable) {
             this.drawable = drawable;
-            int width = drawable.getIntrinsicWidth();
-            int height = drawable.getIntrinsicHeight();
-            drawable.setBounds(0, 0, width, height);
-            setBounds(0, 0, width, height);
-            if (textView != null) {
-                textView.setText(textView.getText());
+
+            float defaultProportion = (float) drawable.getIntrinsicWidth() / (float) drawable.getIntrinsicHeight();
+            int width = Math.min(textView.getWidth(), drawable.getIntrinsicWidth());
+            int height = (int) ((float) width / defaultProportion);
+
+            if (getBounds().right != textView.getWidth() || getBounds().bottom != height) {
+
+                setBounds(0, 0, textView.getWidth(), height); //set to full width
+
+                int halfOfPlaceHolderWidth = (int) ((float) getBounds().right / 2f);
+                int halfOfImageWidth = (int) ((float) width / 2f);
+
+                drawable.setBounds(
+                        halfOfPlaceHolderWidth - halfOfImageWidth, //centering an image
+                        0,
+                        halfOfPlaceHolderWidth + halfOfImageWidth,
+                        height);
+
+                textView.setText(textView.getText()); //refresh text
             }
         }
 

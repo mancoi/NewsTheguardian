@@ -47,7 +47,7 @@ public class News {
         return mImgUrl;
     }
 
-    public String getWebUrl() {
+    public String getUrl() {
         return mUrl;
     }
 

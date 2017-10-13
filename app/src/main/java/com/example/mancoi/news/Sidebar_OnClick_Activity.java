@@ -66,18 +66,8 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 News newsExtra = mAdapter.getItem(position);
-                assert newsExtra != null;
-                String apiUrl = newsExtra.getWebUrl();
-                String title = newsExtra.getTitle();
-                String author = newsExtra.getAuthor();
-                String thumbnail = newsExtra.getImgUrl();
-                Intent intent = new Intent(Sidebar_OnClick_Activity.this, Content_Reader.class);
-                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
-                intent.putExtra("apiUrl", apiUrl);
-                intent.putExtra("headline", title);
-                intent.putExtra("byline", author);
-                intent.putExtra("thumbnail", thumbnail);
-                startActivity(intent);
+
+                QueryUtils.StartIntent(Sidebar_OnClick_Activity.this, newsExtra);
             }
         });
     }
@@ -94,7 +84,7 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
             uriBuilder.appendPath("search");
             uriBuilder.appendQueryParameter("section", mIdToRetrieve);
         }
-        uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail");
+        uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail,trailText");
         uriBuilder.appendQueryParameter("show-editors-picks", "true");
         //uriBuilder.appendQueryParameter("order-by", "relevance");
         uriBuilder.appendQueryParameter("api-key", API_KEY);

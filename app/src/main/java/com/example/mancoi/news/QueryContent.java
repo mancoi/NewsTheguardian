@@ -1,5 +1,7 @@
 package com.example.mancoi.news;
 
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -160,17 +162,13 @@ public final class QueryContent {
             //so get it
             JSONObject content = response.getJSONObject("content");
 
-            //Get the web url or this news
-            String webUrl = content.getString("webUrl");
-
             JSONObject fields = content.getJSONObject("fields");
-
             //Get the News's trail text
-            String trailText = fields.getString("trailText");
+            String main = fields.getString("main");
             //Get the News's body
             String body = fields.getString("body");
 
-            newsContent = new NewsContent(trailText, webUrl, body);
+            newsContent = new NewsContent(main, body);
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
@@ -180,6 +178,17 @@ public final class QueryContent {
         }
 
         return newsContent;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html, PicassoImageGetter imageGetter){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY, imageGetter, null);
+        } else {
+            result = Html.fromHtml(html, imageGetter, null);
+        }
+        return result;
     }
 
 }

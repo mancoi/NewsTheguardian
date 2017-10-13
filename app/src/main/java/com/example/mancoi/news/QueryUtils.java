@@ -4,6 +4,8 @@ package com.example.mancoi.news;
  * Created by mancoi on 24/08/2017.
  */
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -189,7 +191,7 @@ public final class QueryUtils {
                 String date = currentNews.getString("webPublicationDate");
 
                 //Get the webUrl
-                String webUrl = currentNews.getString("webUrl");
+                String apiUrl = currentNews.getString("apiUrl");
 
                 //Get the fields object that contain headline and byline
                 JSONObject fields = currentNews.getJSONObject("fields");
@@ -206,7 +208,7 @@ public final class QueryUtils {
                 String thumbnail = fields.optString("thumbnail");
 
                 //Add what we just got to the newses ArrayList
-                newses.add(new News(headline, byline, trailText, date, section, webUrl, thumbnail));
+                newses.add(new News(headline, byline, trailText, date, section, apiUrl, thumbnail));
 
             }
         } catch (JSONException e) {
@@ -229,6 +231,28 @@ public final class QueryUtils {
             result = Html.fromHtml(html);
         }
         return result;
+    }
+
+    public static void StartIntent (Context context, News newsExtra) {
+        assert newsExtra != null;
+
+        String apiUrl = newsExtra.getUrl();
+        String title = newsExtra.getTitle();
+        String author = newsExtra.getAuthor();
+        String thumbnail = newsExtra.getImgUrl();
+        String trailText = newsExtra.getTrailText();
+
+        Intent intent = new Intent(context, Content_Reader.class);
+
+        //Get the id string of the item's id, then pass it to Content_Reader Activity
+        intent.putExtra("apiUrl", apiUrl);
+        intent.putExtra("headline", title);
+        intent.putExtra("byline", author);
+        intent.putExtra("thumbnail", thumbnail);
+        intent.putExtra("trailText", trailText);
+        intent.putExtra("thumbnail", thumbnail);
+
+        context.startActivity(intent);
     }
 
 }

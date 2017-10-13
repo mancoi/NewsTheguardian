@@ -5,7 +5,8 @@
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:background="@android:color/white">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -25,11 +26,11 @@
                     android:id="@+id/thumbnail_imgView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
                     android:adjustViewBounds="true"
+                    android:background="@color/colorAccent"
                     android:contentDescription="This is a fucking thumbnail"
                     android:scaleType="centerCrop"
-                    tools:src="@drawable/img500"/>
+                    tools:src="@drawable/img500" />
 
                 <LinearLayout
                     android:id="@+id/headline_byline_container"
@@ -65,19 +66,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/headline_byline_container"
-                    android:textSize="16sp"
+                    android:padding="8dp"
                     android:textColor="@android:color/black"
-                    android:padding="8dp" />
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/read_more_but"
                     android:layout_width="240dp"
                     android:layout_height="64dp"
-                    android:layout_marginTop="16dp"
-                    android:padding="8dp"
-                    android:text="@string/read_more"
                     android:layout_below="@id/trailText_tv"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true"
+                    android:padding="8dp"
+                    android:text="@string/read_more" />
+
+                <TextView
+                    android:id="@+id/body_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trailText_tv"
+                    android:padding="8dp"
+                    android:textColor="@android:color/black"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/trailText_tv"
+                    >
+
+                    <WebView
+                        android:id="@+id/content_wv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
+
+                </FrameLayout>
+
 
             </RelativeLayout>
 

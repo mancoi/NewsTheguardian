@@ -54,7 +54,7 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
                 News newsExtra = mAdapter.getItem(position);
                 assert newsExtra != null;
 
-                String apiUrl = newsExtra.getWebUrl();
+                String apiUrl = newsExtra.getUrl();
                 String title = newsExtra.getTitle();
                 String author = newsExtra.getAuthor();
                 String thumbnail = newsExtra.getImgUrl();
