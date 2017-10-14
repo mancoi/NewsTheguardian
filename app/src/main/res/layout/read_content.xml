@@ -28,9 +28,18 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:background="@color/colorAccent"
-                    android:contentDescription="This is a fucking thumbnail"
                     android:scaleType="centerCrop"
-                    tools:src="@drawable/img500" />
+                    tools:src="@drawable/img500"
+                    android:contentDescription="@string/this_is_a_thumbnail" />
+
+                <ProgressBar
+                    android:id="@+id/loading_indicator"
+                    style="?android:progressBarStyleHorizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:visibility="gone"
+                    android:progressDrawable="@drawable/custom_progress_bar" />
 
                 <LinearLayout
                     android:id="@+id/headline_byline_container"
@@ -102,7 +111,6 @@
                         android:visibility="gone"/>
 
                 </FrameLayout>
-
 
             </RelativeLayout>
 

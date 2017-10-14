@@ -11,16 +11,20 @@ import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.customtabs.CustomTabsSession;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -31,14 +35,17 @@ import com.squareup.picasso.Picasso;
 
 public class Content_Reader extends AppCompatActivity {
 
-    private CustomTabsClient mClient;
-    private CustomTabsServiceConnection connection;
+    //Set up some variables for Chrome Custom Tab
+    CustomTabsClient mClient;
+    CustomTabsSession mCustomTabsSession;
+    CustomTabsServiceConnection mCustomTabsServiceConnection;
+    CustomTabsIntent customTabsIntent;
+
     private WebView mWebview;
 
-    private String url;
-
-    private final String HTTP_REQUEST_PARAM =
-            "?shouldHideAdverts=true&show-fields=main,body&show-elements=all&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+    // Make the newsAsyncTask as Global variable because we need to cancel it when this activity
+    // pause
+    private NewsAsyncTask newsAsyncTask;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,18 +62,13 @@ public class Content_Reader extends AppCompatActivity {
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
-        final String webUrl = intent.getStringExtra("apiUrl");
 
-//        if (mClient != null)
-//        {
-//            // With a valid mClient. Set the Url that user may launch
-//            CustomTabsSession session = mClient.newSession(new CustomTabsCallback());
-//            session.mayLaunchUrl(Uri.parse(webUrl), null, null);
-//        }
-//        else
-//        {
-//
-//        }
+        String apiUrl = intent.getStringExtra("apiUrl");
+
+        apiUrl += "?shouldHideAdverts=true&show-fields=main,body&show-elements=all&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+
+        newsAsyncTask = new NewsAsyncTask();
+        newsAsyncTask.execute(apiUrl);
 
         //Get the title and set it to headline_tv
         TextView title = (TextView) findViewById(R.id.headline_tv);
@@ -106,62 +108,99 @@ public class Content_Reader extends AppCompatActivity {
 
         // Find the WebView in case of user not installed Chrome
         mWebview = (WebView) findViewById(R.id.content_wv);
+
+        // This should be set to true because we have content that require Javascript to play,
+        // such as Youtube Embedded Video
         mWebview.getSettings().setJavaScriptEnabled(true);
-        mWebview.getSettings().setMixedContentMode(mWebview.getSettings().MIXED_CONTENT_COMPATIBILITY_MODE);
+
         mWebview.setWebViewClient(new WebViewClient() {
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 handler.proceed();
             }
 
+            /*
+            The WebView should let user choose what app to send E-mail when
+            that user click on a mailto: link.
+            This WebView also should open the other in Chrome Custom Tab for better user experience
+             */
             @SuppressWarnings("deprecation")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-                //Open Link in a Custom Tab
-                Uri uri = Uri.parse(url);
-
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
-
-                CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.launchUrl(Content_Reader.this, uri);
-
+                // When user click on a mailto: link, send an implicitly intent
+                // With this, the application will ask user what mail application should handle it.
+                if (url.startsWith("mailto:")) {
+                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                    intent.setData(Uri.parse("mailto:"));
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                } else {
+                    //Open Link in a Custom Tab
+                    Uri uri = Uri.parse(url);
+                    customTabsIntent.launchUrl(Content_Reader.this, uri);
+                }
                 return true;
-
             }
-
 
         });
 
-        final Button butReadmore = (Button) findViewById(R.id.read_more_but);
-        butReadmore.setOnClickListener(new View.OnClickListener() {
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_indicator);
+        progressBar.setIndeterminate(false);
+
+        mWebview.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                progressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        final Button butReadMore = (Button) findViewById(R.id.read_more_but);
+        butReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                if (mClient != null)
-//                {
-//                    // Use a CustomTabsIntent.Builder to configure CustomTabsIntent.
-//                    // Once ready, call CustomTabsIntent.Builder.build() to create a CustomTabsIntent
-//                    // and launch the desired Url with CustomTabsIntent.launchUrl()
-//                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-//                    builder.setToolbarColor(ContextCompat.getColor(Content_Reader.this, R.color.colorPrimary));
-//                    CustomTabsIntent customTabsIntent = builder.build();
-//                    customTabsIntent.launchUrl(Content_Reader.this, Uri.parse(webUrl));
-//
-//                    finish();
-//                }
-//                else
-//                {
-                String apiUrl = webUrl + HTTP_REQUEST_PARAM;
-                url = apiUrl;
-                butReadmore.setVisibility(View.GONE);
+                butReadMore.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
                 mWebview.setVisibility(View.VISIBLE);
-                NewsAsyncTask newsAsyncTask = new NewsAsyncTask();
-                newsAsyncTask.execute(apiUrl);
-//                }
 
             }
         });
+
+        //----------Install And Optimize Chrome Custom Tab---------------------------------------//
+
+        // Package name for the Chrome channel the client wants to connect to. This
+        // depends on the channel name.
+        // Stable = com.android.chrome
+        // Beta = com.chrome.beta
+        // Dev = com.chrome.dev
+        final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";  // Change when in stable
+
+        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName name, CustomTabsClient client) {
+                mClient = client;
+                mClient.warmup(0);
+                mCustomTabsSession = mClient.newSession(null);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mClient = null;
+            }
+        };
+
+        CustomTabsClient.bindCustomTabsService(Content_Reader.this, CUSTOM_TAB_PACKAGE_NAME, mCustomTabsServiceConnection);
+        customTabsIntent = new CustomTabsIntent
+                .Builder(mCustomTabsSession)
+                .setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setShowTitle(true)
+                .build();
+
+        //------------------------------DONE-----------------------------------------------------//
 
     }
 
@@ -179,7 +218,7 @@ public class Content_Reader extends AppCompatActivity {
      * Then onPostExecute() is passed the result of doInBackground() method, but runs on the
      * UI thread, so it can use the produced data to update the UI.
      */
-    private class NewsAsyncTask extends AsyncTask<String, Void, NewsContent> {
+    private class NewsAsyncTask extends AsyncTask<String, Integer, NewsContent> {
 
         /**
          * This method runs on a background thread and performs the network request.
@@ -194,18 +233,14 @@ public class Content_Reader extends AppCompatActivity {
                 return null;
             }
 
-            NewsContent newsContent = QueryContent.fetchNewsData(urls[0]);
-            return newsContent;
-
+            return QueryContent.fetchNewsData(urls[0]);
 
         }
 
         /**
          * This method runs on the main UI thread after the background work has been
          * completed. This method receives as input, the return value from the doInBackground()
-         * method. First we clear out the adapter, to get rid of earthquake data from a previous
-         * query to USGS. Then we update the adapter with the new list of earthquakes,
-         * which will trigger the ListView to re-populate its list items.
+         * method. Then we make the WebView load that content
          */
         @Override
         protected void onPostExecute(final NewsContent data) {
@@ -213,24 +248,14 @@ public class Content_Reader extends AppCompatActivity {
             // If there is a valid list of {@link News}s, then add them to the adapter's
             // data set. This will trigger the content to update.
             if (data != null) {
-
-                //PicassoImageGetter imageGetter = new PicassoImageGetter(body);
-                TextView body = (TextView) findViewById(R.id.body_tv);
-
-//                PicassoImageGetter imageGetter = new PicassoImageGetter(body);
-//                body.setText(QueryContent.fromHtml(data.getContent(), imageGetter));
-
-                //mWebview.loadData(data.getContent(), "text/html", null);
-                String dataa = data.getContent();
-                //mWebview.clearCache(true);
                 mWebview.loadDataWithBaseURL(
                         null,
-
+                        // Style for the <img> and the <iframe> tag
                         "<style>"
                                 + "img{display: inline;height: auto;max-width: 100%;}"
                                 + "iframe{width: 100%}"
                                 + "</style>"
-                                + dataa,
+                                + data.getContent(),
 
                         "text/html",
                         "UTF-8",
@@ -242,43 +267,23 @@ public class Content_Reader extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onBackPressed() {
+        super.onBackPressed();
 
-        // Package name for the Chrome channel the client wants to connect to. This
-        // depends on the channel name.
-        // Stable = com.android.chrome
-        // Beta = com.chrome.beta
-        // Dev = com.chrome.dev
-        final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";  // Change when in stable
+        // Cancel the AsyncTask when user leave this Activity or the App will crash
+        if (!newsAsyncTask.isCancelled()) {
+            newsAsyncTask.cancel(true);
+        }
 
-        connection = new CustomTabsServiceConnection() {
-            @Override
-            public void onCustomTabsServiceConnected(ComponentName name, CustomTabsClient client) {
-                mClient = client;
-                mClient.warmup(0);
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                mClient = null;
-            }
-        };
-
-        CustomTabsClient.bindCustomTabsService(this, CUSTOM_TAB_PACKAGE_NAME, connection);
-
-    }
-
-    @Override
-    protected void onPause() {
-
-        super.onPause();
-        this.unbindService(connection);
+        finish();
     }
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
+
+        // Destroy the WebView so we won't get memory leak
         if (mWebview != null) {
             ViewGroup viewGroup = (ViewGroup) mWebview.getParent();
             viewGroup.removeAllViews();
@@ -288,5 +293,9 @@ public class Content_Reader extends AppCompatActivity {
             mWebview.destroy();
             mWebview = null;
         }
+
+        //Unbind the ServiceConnection to not get memory leak
+        this.unbindService(mCustomTabsServiceConnection);
     }
+
 }
