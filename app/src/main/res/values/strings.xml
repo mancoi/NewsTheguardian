@@ -36,4 +36,6 @@
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
     <string name="relevance">Relevance</string>
+    <string name="read_more">Read more</string>
+    <string name="this_is_a_thumbnail">This is a thumbnail</string>
 </resources>

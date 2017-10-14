@@ -4,6 +4,10 @@ package com.example.mancoi.news;
  * Created by mancoi on 24/08/2017.
  */
 
+import android.content.Context;
+import android.content.Intent;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -186,8 +190,8 @@ public final class QueryUtils {
                 //Get the public date
                 String date = currentNews.getString("webPublicationDate");
 
-                //Get the apiUrl
-                String apiUrl = currentNews.getString("webUrl");
+                //Get the webUrl
+                String apiUrl = currentNews.getString("apiUrl");
 
                 //Get the fields object that contain headline and byline
                 JSONObject fields = currentNews.getJSONObject("fields");
@@ -197,13 +201,14 @@ public final class QueryUtils {
                 //Get the byline
                 //If there is no byline, then it will be set to null
                 String byline = fields.optString("byline");
-                ;
+                //Get the trailText
+                String trailText = fields.optString("trailText");
 
                 //Get the thumbnail link
                 String thumbnail = fields.optString("thumbnail");
 
                 //Add what we just got to the newses ArrayList
-                newses.add(new News(headline, byline, date, section, apiUrl, thumbnail));
+                newses.add(new News(headline, byline, trailText, date, section, apiUrl, thumbnail));
 
             }
         } catch (JSONException e) {
@@ -215,6 +220,39 @@ public final class QueryUtils {
 
         // Return the list of newses
         return newses;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned fromHtml(String html){
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
+    }
+
+    public static void StartIntent (Context context, News newsExtra) {
+        assert newsExtra != null;
+
+        String apiUrl = newsExtra.getUrl();
+        String title = newsExtra.getTitle();
+        String author = newsExtra.getAuthor();
+        String thumbnail = newsExtra.getImgUrl();
+        String trailText = newsExtra.getTrailText();
+
+        Intent intent = new Intent(context, Content_Reader.class);
+
+        //Get the id string of the item's id, then pass it to Content_Reader Activity
+        intent.putExtra("apiUrl", apiUrl);
+        intent.putExtra("headline", title);
+        intent.putExtra("byline", author);
+        intent.putExtra("thumbnail", thumbnail);
+        intent.putExtra("trailText", trailText);
+        intent.putExtra("thumbnail", thumbnail);
+
+        context.startActivity(intent);
     }
 
 }

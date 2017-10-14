@@ -81,12 +81,9 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         newsListItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String apiUrl = mAdapter.getItem(position).getApiUrl();
+                News newsExtra = mAdapter.getItem(position);
 
-                Intent intent = new Intent(Search_Activity.this, Content_Reader.class);
-                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
-                intent.putExtra("apiUrl", apiUrl);
-                startActivity(intent);
+                QueryUtils.StartIntent(Search_Activity.this, newsExtra);
             }
         });
 
@@ -176,7 +173,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("q", mQuery);
-        uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail");
+        uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail,trailText");
         uriBuilder.appendQueryParameter("order-by", mOrderBy);
         uriBuilder.appendQueryParameter("api-key", API_KEY);
 

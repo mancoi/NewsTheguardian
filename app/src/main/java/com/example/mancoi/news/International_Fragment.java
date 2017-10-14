@@ -1,7 +1,6 @@
 package com.example.mancoi.news;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -22,7 +21,7 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
 
     View rootView;
     private String NEWS_HTTP_REQUEST =
-            "http://content.guardianapis.com/international?show-editors-picks=true&show-fields=headline,byline,thumbnail&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+            "http://content.guardianapis.com/international?show-editors-picks=true&show-fields=headline,byline,thumbnail,trailText&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
     private NewsAdapter mAdapter;
     private int INTERNATIONAL_LOADER_ID = 1;
 
@@ -51,12 +50,9 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
         newsListItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String apiUrl = mAdapter.getItem(position).getApiUrl();
 
-                Intent intent = new Intent(getContext(), Content_Reader.class);
-                //Get the id string of the item's id, then pass it to Sidebar_OnClick_Activity
-                intent.putExtra("apiUrl", apiUrl);
-                startActivity(intent);
+                News newsExtra = mAdapter.getItem(position);
+                QueryUtils.StartIntent(getContext(), newsExtra);
             }
         });
 
