@@ -23,14 +23,13 @@ import java.util.List;
 public class International_Fragment extends Fragment implements LoaderManager.LoaderCallbacks<List<News>> {
 
     View rootView;
+    TextView emptyStateTextView;
+    ProgressBar loaddingIndicator;
+    LoaderManager loaderManager;
     private String NEWS_HTTP_REQUEST =
             "http://content.guardianapis.com/international?show-editors-picks=true&show-fields=headline,byline,thumbnail,trailText&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
     private NewsAdapter mAdapter;
     private int INTERNATIONAL_LOADER_ID = 2;
-
-    TextView emptyStateTextView;
-    ProgressBar loaddingIndicator;
-    LoaderManager loaderManager;
 
     public International_Fragment() {
         // Required empty public constructor
@@ -83,7 +82,6 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
                             getContext()
                             , getActivity()
                     );
-
                 } else {
                     Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
                 }

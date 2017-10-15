@@ -204,6 +204,50 @@ public class Content_Reader extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // Cancel the AsyncTask when user leave this Activity or the App will crash
+        if (!newsAsyncTask.isCancelled()) {
+            newsAsyncTask.cancel(true);
+        }
+
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+        // Destroy the WebView so we won't get memory leak
+        if (mWebview != null) {
+            ViewGroup viewGroup = (ViewGroup) mWebview.getParent();
+            viewGroup.removeAllViews();
+            mWebview.onPause();
+            mWebview.removeAllViews();
+            mWebview.destroyDrawingCache();
+            mWebview.destroy();
+            mWebview = null;
+        }
+
+        //Unbind the ServiceConnection to not get memory leak
+        this.unbindService(mCustomTabsServiceConnection);
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+
+        // Cancel the AsyncTask when user leave this Activity or the App will crash
+        if (!newsAsyncTask.isCancelled()) {
+            newsAsyncTask.cancel(true);
+        }
+
+        finish();
+        return super.onNavigateUp();
+    }
+
     /**
      * {@link AsyncTask} to perform the network request on a background thread, and then
      * update the UI with the list of earthquakes in the response.
@@ -264,51 +308,6 @@ public class Content_Reader extends AppCompatActivity {
 
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        // Cancel the AsyncTask when user leave this Activity or the App will crash
-        if (!newsAsyncTask.isCancelled()) {
-            newsAsyncTask.cancel(true);
-        }
-
-        finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
-
-        // Destroy the WebView so we won't get memory leak
-        if (mWebview != null) {
-            ViewGroup viewGroup = (ViewGroup) mWebview.getParent();
-            viewGroup.removeAllViews();
-            mWebview.onPause();
-            mWebview.removeAllViews();
-            mWebview.destroyDrawingCache();
-            mWebview.destroy();
-            mWebview = null;
-        }
-
-        //Unbind the ServiceConnection to not get memory leak
-        this.unbindService(mCustomTabsServiceConnection);
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-
-        // Cancel the AsyncTask when user leave this Activity or the App will crash
-        if (!newsAsyncTask.isCancelled()) {
-            newsAsyncTask.cancel(true);
-        }
-
-        finish();
-
-        return super.onNavigateUp();
     }
 
 }

@@ -22,12 +22,11 @@ import java.util.List;
 public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCallbacks<List<News>> {
 
     View rootView;
-    private NewsAdapter mAdapter;
-    private int NEWEST_LOADER_ID = 1;
-
     TextView emptyStateTextView;
     ProgressBar loaddingIndicator;
     LoaderManager loaderManager;
+    private NewsAdapter mAdapter;
+    private int NEWEST_LOADER_ID = 1;
 
     public Newest_Fragment() {
         // Required empty public constructor
@@ -81,7 +80,6 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
                             getContext()
                             , getActivity()
                     );
-
                 } else {
                     Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
                 }

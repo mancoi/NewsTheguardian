@@ -273,12 +273,10 @@ public final class QueryUtils extends FragmentActivity {
             Context context
             , Activity activity
     ) {
-
         if (hasInternetConnection(context)) {
 
             ViewPager viewPage = (ViewPager) activity.findViewById(R.id.viewpager);
             viewPage.getAdapter().notifyDataSetChanged();
         }
-
     }
 }
