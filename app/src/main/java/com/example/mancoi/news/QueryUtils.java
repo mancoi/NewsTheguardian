@@ -6,10 +6,17 @@ package com.example.mancoi.news;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v4.app.LoaderManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -223,17 +230,17 @@ public final class QueryUtils {
     }
 
     @SuppressWarnings("deprecation")
-    public static Spanned fromHtml(String html){
+    public static Spanned fromHtml(String html) {
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+            result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
         } else {
             result = Html.fromHtml(html);
         }
         return result;
     }
 
-    public static void StartIntent (Context context, News newsExtra) {
+    static void StartIntent(Context context, News newsExtra) {
         assert newsExtra != null;
 
         String apiUrl = newsExtra.getUrl();
@@ -255,4 +262,33 @@ public final class QueryUtils {
         context.startActivity(intent);
     }
 
+    static boolean hasInternetConnection(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    static void setUpOnEmptyStateTextViewClick(
+            Context context
+            , TextView emptyStateTextView
+            , ProgressBar loaddingIndicator
+            , LoaderManager loaderManager
+            , int loaderId
+            , LoaderManager.LoaderCallbacks<List<News>> listLoaderCallbacks) {
+        emptyStateTextView.setVisibility(View.GONE);
+        loaddingIndicator.setVisibility(View.VISIBLE);
+        if (hasInternetConnection(context)) {
+
+            // If has internet connection, then restart the Loader
+            loaderManager.restartLoader(loaderId, null, listLoaderCallbacks);
+            loaddingIndicator.setVisibility(View.GONE);
+        } else {
+            loaddingIndicator.setVisibility(View.GONE);
+            emptyStateTextView.setVisibility(View.VISIBLE);
+            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

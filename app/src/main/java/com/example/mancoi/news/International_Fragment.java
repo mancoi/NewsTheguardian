@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,10 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
     private NewsAdapter mAdapter;
     private int INTERNATIONAL_LOADER_ID = 1;
 
+    TextView emptyStateTextView;
+    ProgressBar loaddingIndicator;
+    LoaderManager loaderManager;
+
     public International_Fragment() {
         // Required empty public constructor
     }
@@ -37,15 +43,27 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
 
         final ListView newsListItem = (ListView) rootView.findViewById(R.id.list);
 
+        emptyStateTextView = rootView.findViewById(R.id.empty_state_tv);
+        loaddingIndicator = rootView.findViewById(R.id.loading_indicator);
+
         mAdapter = new NewsAdapter(getContext(), new ArrayList<News>());
         newsListItem.setAdapter(mAdapter);
+        newsListItem.setEmptyView(emptyStateTextView);
+
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
-        LoaderManager loaderManager = getLoaderManager();
-        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-        // because this activity implements the LoaderCallbacks interface).
-        loaderManager.initLoader(INTERNATIONAL_LOADER_ID, null, this);
+        loaderManager = getLoaderManager();
+        if (QueryUtils.hasInternetConnection(getContext())) {
+
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(INTERNATIONAL_LOADER_ID, null, this);
+
+        } else {
+            loaddingIndicator.setVisibility(View.GONE);
+            emptyStateTextView.setText(getResources().getString(R.string.no_internet));
+        }
 
         newsListItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -53,6 +71,20 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
 
                 News newsExtra = mAdapter.getItem(position);
                 QueryUtils.StartIntent(getContext(), newsExtra);
+            }
+        });
+
+        emptyStateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                QueryUtils.setUpOnEmptyStateTextViewClick(
+                        getContext()
+                        , emptyStateTextView
+                        , loaddingIndicator
+                        , loaderManager
+                        , INTERNATIONAL_LOADER_ID
+                        , International_Fragment.this);
             }
         });
 
@@ -67,6 +99,8 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
+
+        loaddingIndicator.setVisibility(View.GONE);
 
         //Clear the adapter of previous earthquake data
         mAdapter.clear();
@@ -84,4 +118,12 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
         mAdapter.clear();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (QueryUtils.hasInternetConnection(getContext()) && mAdapter.isEmpty() && loaderManager.hasRunningLoaders() && mAdapter != null) {
+            loaderManager.restartLoader(INTERNATIONAL_LOADER_ID, null, International_Fragment.this);
+        }
+    }
 }
