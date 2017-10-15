@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,15 +33,13 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
     private final String HTTP_REQUEST = "https://content.guardianapis.com/search?";
     private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
-
+    LoaderManager loaderManager;
+    ProgressBar loaddingIndicator;
     private NewsAdapter mAdapter;
-
-    private int LOADER_ID = 1;
-
+    private int LOADER_ID = 3;
     private String mQuery;
-
     private View rootView;
-
+    private TextView emptyStateTextView;
     // Because the API request with the parameter "q" will return results that
     // have been order by "relevance" by default, we set it to "relevance" at first.
     // So when user performed a search then set the order to "relevance", we don't have
@@ -68,15 +68,26 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
         final ListView newsListItem = (ListView) findViewById(R.id.list);
 
-        mAdapter = new NewsAdapter(this, new ArrayList<News>());
+        emptyStateTextView = (TextView) findViewById(R.id.empty_state_tv);
+        loaddingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+
+        mAdapter = new NewsAdapter(Search_Activity.this, new ArrayList<News>());
         newsListItem.setAdapter(mAdapter);
+        newsListItem.setEmptyView(emptyStateTextView);
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
-        LoaderManager loaderManager = getSupportLoaderManager();
-        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-        // because this activity implements the LoaderCallbacks interface).
-        loaderManager.initLoader(LOADER_ID, null, this);
+        loaderManager = getSupportLoaderManager();
+        if (QueryUtils.hasInternetConnection(Search_Activity.this)) {
+
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(LOADER_ID, null, this);
+
+        } else {
+            loaddingIndicator.setVisibility(View.GONE);
+            emptyStateTextView.setText(getResources().getString(R.string.no_internet));
+        }
 
         newsListItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,6 +99,20 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         });
 
         rootView = findViewById(R.id.root_layout);
+
+        emptyStateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                loaddingIndicator.setVisibility(View.VISIBLE);
+                if (QueryUtils.hasInternetConnection(Search_Activity.this)) {
+                    loaderManager.restartLoader(LOADER_ID, null, Search_Activity.this);
+                } else {
+                    loaddingIndicator.setVisibility(View.GONE);
+                    Toast.makeText(Search_Activity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -150,21 +175,19 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         // no need to do anything else. Show the Toast message to inform user about that.
         // Else, set the order to what user have selected and restart the Loader
         // to show results with that order
-        if (!mOrderBy.equals(itemIdString))
+        if (itemId == android.R.id.home)
         {
+            return super.onOptionsItemSelected(item);
+        } else if (!mOrderBy.equals(itemIdString)) {
             mOrderBy = itemIdString;
             getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
             Toast.makeText(this, mOrderBy + " results", Toast.LENGTH_SHORT).show();
             return super.onOptionsItemSelected(item);
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "Showing " + mOrderBy + " results", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
-
-
 
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
@@ -182,6 +205,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
+
+        loaddingIndicator.setVisibility(View.GONE);
         //Clear the adapter of previous news data
         mAdapter.clear();
 
@@ -189,6 +214,12 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
+        } else {
+            if (QueryUtils.hasInternetConnection(Search_Activity.this)) {
+                emptyStateTextView.setText(R.string.found_nothing);
+            } else {
+                emptyStateTextView.setText(R.string.no_internet);
+            }
         }
     }
 

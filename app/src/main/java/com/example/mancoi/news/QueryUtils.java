@@ -41,6 +41,7 @@ public final class QueryUtils extends FragmentActivity {
      */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
+
     /**
      * Create a private constructor because no one should ever create a {@link QueryUtils} object.
      * This class is only meant to hold static variables and methods, which can be accessed
@@ -173,6 +174,10 @@ public final class QueryUtils extends FragmentActivity {
             //Get the response JSONObject
             JSONObject response = root.getJSONObject("response");
 
+            int total = response.getInt("total");
+            if (total == 0) {
+                return null;
+            }
             //Get the results JSONArray
             //If it not exits, it because the array return is the result of what we search,
             //so get it
@@ -275,7 +280,7 @@ public final class QueryUtils extends FragmentActivity {
     ) {
         if (hasInternetConnection(context)) {
 
-            ViewPager viewPage = (ViewPager) activity.findViewById(R.id.viewpager);
+            ViewPager viewPage = activity.findViewById(R.id.viewpager);
             viewPage.getAdapter().notifyDataSetChanged();
         }
     }

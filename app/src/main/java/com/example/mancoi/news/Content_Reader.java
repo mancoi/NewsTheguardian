@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -66,9 +67,12 @@ public class Content_Reader extends AppCompatActivity {
         String apiUrl = intent.getStringExtra("apiUrl");
 
         apiUrl += "?shouldHideAdverts=true&show-fields=main,body&show-elements=all&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
+        final String url = apiUrl;
 
-        newsAsyncTask = new NewsAsyncTask();
-        newsAsyncTask.execute(apiUrl);
+        if (QueryUtils.hasInternetConnection(Content_Reader.this)) {
+            newsAsyncTask = new NewsAsyncTask();
+            newsAsyncTask.execute(apiUrl);
+        }
 
         //Get the title and set it to headline_tv
         TextView title = (TextView) findViewById(R.id.headline_tv);
@@ -163,9 +167,21 @@ public class Content_Reader extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                butReadMore.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                mWebview.setVisibility(View.VISIBLE);
+                if (QueryUtils.hasInternetConnection(Content_Reader.this)) {
+                    if (newsAsyncTask == null) {
+                        newsAsyncTask = new NewsAsyncTask();
+                        newsAsyncTask.execute(url);
+                    }
+                    butReadMore.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    mWebview.setVisibility(View.VISIBLE);
+                } else {
+                    if (newsAsyncTask != null) {
+                        cancelAsyncTask();
+                    }
+                    Toast.makeText(Content_Reader.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -208,10 +224,7 @@ public class Content_Reader extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        // Cancel the AsyncTask when user leave this Activity or the App will crash
-        if (!newsAsyncTask.isCancelled()) {
-            newsAsyncTask.cancel(true);
-        }
+        cancelAsyncTask();
 
         finish();
     }
@@ -236,13 +249,18 @@ public class Content_Reader extends AppCompatActivity {
         this.unbindService(mCustomTabsServiceConnection);
     }
 
+    private void cancelAsyncTask() {
+        // Cancel the AsyncTask when user leave this Activity or the App will crash
+        if (newsAsyncTask != null) {
+            newsAsyncTask.cancel(true);
+        }
+    }
+
     @Override
     public boolean onNavigateUp() {
 
         // Cancel the AsyncTask when user leave this Activity or the App will crash
-        if (!newsAsyncTask.isCancelled()) {
-            newsAsyncTask.cancel(true);
-        }
+        cancelAsyncTask();
 
         finish();
         return super.onNavigateUp();
@@ -279,6 +297,12 @@ public class Content_Reader extends AppCompatActivity {
 
             return QueryContent.fetchNewsData(urls[0]);
 
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            newsAsyncTask = null;
         }
 
         /**
