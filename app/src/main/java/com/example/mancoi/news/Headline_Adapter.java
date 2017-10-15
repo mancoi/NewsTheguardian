@@ -19,6 +19,12 @@ public class Headline_Adapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        // POSITION_NONE makes it possible to reload the PagerAdapter
+        return POSITION_NONE;
+    }
+
+    @Override
     public Fragment getItem(int position) {
         if (position == 0) {
             return new Newest_Fragment();

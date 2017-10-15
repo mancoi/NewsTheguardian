@@ -4,19 +4,17 @@ package com.example.mancoi.news;
  * Created by mancoi on 24/08/2017.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.app.LoaderManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +34,7 @@ import java.util.List;
 /**
  * Helper methods related to requesting and receiving Earthquake data from USGS.
  */
-public final class QueryUtils {
+public final class QueryUtils extends FragmentActivity {
 
     /**
      * Tag for the log messages
@@ -273,22 +271,14 @@ public final class QueryUtils {
 
     static void setUpOnEmptyStateTextViewClick(
             Context context
-            , TextView emptyStateTextView
-            , ProgressBar loaddingIndicator
-            , LoaderManager loaderManager
-            , int loaderId
-            , LoaderManager.LoaderCallbacks<List<News>> listLoaderCallbacks) {
-        emptyStateTextView.setVisibility(View.GONE);
-        loaddingIndicator.setVisibility(View.VISIBLE);
+            , Activity activity
+    ) {
+
         if (hasInternetConnection(context)) {
 
-            // If has internet connection, then restart the Loader
-            loaderManager.restartLoader(loaderId, null, listLoaderCallbacks);
-            loaddingIndicator.setVisibility(View.GONE);
-        } else {
-            loaddingIndicator.setVisibility(View.GONE);
-            emptyStateTextView.setVisibility(View.VISIBLE);
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show();
+            ViewPager viewPage = (ViewPager) activity.findViewById(R.id.viewpager);
+            viewPage.getAdapter().notifyDataSetChanged();
         }
+
     }
 }

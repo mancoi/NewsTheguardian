@@ -298,4 +298,17 @@ public class Content_Reader extends AppCompatActivity {
         this.unbindService(mCustomTabsServiceConnection);
     }
 
+    @Override
+    public boolean onNavigateUp() {
+
+        // Cancel the AsyncTask when user leave this Activity or the App will crash
+        if (!newsAsyncTask.isCancelled()) {
+            newsAsyncTask.cancel(true);
+        }
+
+        finish();
+
+        return super.onNavigateUp();
+    }
+
 }

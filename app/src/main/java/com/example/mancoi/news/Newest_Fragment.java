@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,13 +76,15 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
             @Override
             public void onClick(View view) {
 
-                QueryUtils.setUpOnEmptyStateTextViewClick(
-                        getContext()
-                        , emptyStateTextView
-                        , loaddingIndicator
-                        , loaderManager
-                        , NEWEST_LOADER_ID
-                        , Newest_Fragment.this);
+                if (QueryUtils.hasInternetConnection(getContext())) {
+                    QueryUtils.setUpOnEmptyStateTextViewClick(
+                            getContext()
+                            , getActivity()
+                    );
+
+                } else {
+                    Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

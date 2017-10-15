@@ -54,7 +54,6 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
         //   3. Set the tab layout's tab names with the view pager's adapter's titles
         //      by calling onPageTitle()
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     @Override

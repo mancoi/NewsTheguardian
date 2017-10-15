@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
     private String NEWS_HTTP_REQUEST =
             "http://content.guardianapis.com/international?show-editors-picks=true&show-fields=headline,byline,thumbnail,trailText&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
     private NewsAdapter mAdapter;
-    private int INTERNATIONAL_LOADER_ID = 1;
+    private int INTERNATIONAL_LOADER_ID = 2;
 
     TextView emptyStateTextView;
     ProgressBar loaddingIndicator;
@@ -49,7 +50,6 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
         mAdapter = new NewsAdapter(getContext(), new ArrayList<News>());
         newsListItem.setAdapter(mAdapter);
         newsListItem.setEmptyView(emptyStateTextView);
-
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
         loaderManager = getLoaderManager();
@@ -78,13 +78,15 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
             @Override
             public void onClick(View view) {
 
-                QueryUtils.setUpOnEmptyStateTextViewClick(
-                        getContext()
-                        , emptyStateTextView
-                        , loaddingIndicator
-                        , loaderManager
-                        , INTERNATIONAL_LOADER_ID
-                        , International_Fragment.this);
+                if (QueryUtils.hasInternetConnection(getContext())) {
+                    QueryUtils.setUpOnEmptyStateTextViewClick(
+                            getContext()
+                            , getActivity()
+                    );
+
+                } else {
+                    Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -112,7 +114,6 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
         }
 
     }
-
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
         mAdapter.clear();
