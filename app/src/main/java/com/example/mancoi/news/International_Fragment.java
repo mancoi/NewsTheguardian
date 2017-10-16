@@ -25,7 +25,6 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
     View rootView;
     TextView emptyStateTextView;
     ProgressBar loaddingIndicator;
-    LoaderManager loaderManager;
     private String NEWS_HTTP_REQUEST =
             "http://content.guardianapis.com/international?show-editors-picks=true&show-fields=headline,byline,thumbnail,trailText&api-key=3d076462-19d6-4cae-8d80-c3353eee520c";
     private NewsAdapter mAdapter;
@@ -51,7 +50,7 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
         newsListItem.setEmptyView(emptyStateTextView);
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
-        loaderManager = getLoaderManager();
+        LoaderManager loaderManager = getLoaderManager();
         if (QueryUtils.hasInternetConnection(getContext())) {
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
@@ -100,12 +99,14 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
 
+        getLoaderManager().destroyLoader(INTERNATIONAL_LOADER_ID);
+
         loaddingIndicator.setVisibility(View.GONE);
 
-        //Clear the adapter of previous earthquake data
+        //Clear the adapter of previous news data
         mAdapter.clear();
 
-        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // If there is a valid list of {@link News}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
@@ -120,9 +121,9 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onResume() {
         super.onResume();
-
-        if (QueryUtils.hasInternetConnection(getContext()) && mAdapter.isEmpty() && loaderManager.hasRunningLoaders() && mAdapter != null) {
-            loaderManager.restartLoader(INTERNATIONAL_LOADER_ID, null, International_Fragment.this);
+        if (mAdapter == null || mAdapter.isEmpty()) {
+            loaddingIndicator.setVisibility(View.VISIBLE);
+            getLoaderManager().restartLoader(INTERNATIONAL_LOADER_ID, null, International_Fragment.this);
         }
     }
 }

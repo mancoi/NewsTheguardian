@@ -107,6 +107,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
                 loaddingIndicator.setVisibility(View.VISIBLE);
                 if (QueryUtils.hasInternetConnection(Search_Activity.this)) {
                     loaderManager.restartLoader(LOADER_ID, null, Search_Activity.this);
+
                 } else {
                     loaddingIndicator.setVisibility(View.GONE);
                     Toast.makeText(Search_Activity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
@@ -127,6 +128,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconified(false); // Expand the widget
         searchView.setQuery(mQuery, false);
+
 
         // Calculate the number of pixels according to a given value in the DIP metrics
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, getResources().getDisplayMetrics());
@@ -231,6 +233,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     @Override
     protected void onResume() {
         super.onResume();
+
         rootView.requestFocus();
+
     }
 }

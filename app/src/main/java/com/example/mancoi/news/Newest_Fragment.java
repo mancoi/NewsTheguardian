@@ -24,7 +24,6 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
     View rootView;
     TextView emptyStateTextView;
     ProgressBar loaddingIndicator;
-    LoaderManager loaderManager;
     private NewsAdapter mAdapter;
     private int NEWEST_LOADER_ID = 1;
 
@@ -47,7 +46,7 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
         newsListItem.setEmptyView(emptyStateTextView);
 
         // Get a reference to the LoaderManager, in order to interact with loaders.
-        loaderManager = getLoaderManager();
+        LoaderManager loaderManager = getLoaderManager();
         if (QueryUtils.hasInternetConnection(getContext())) {
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
@@ -99,6 +98,7 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
 
+        getLoaderManager().destroyLoader(NEWEST_LOADER_ID);
 
         loaddingIndicator.setVisibility(View.GONE);
 
@@ -117,4 +117,12 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
         mAdapter.clear();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdapter == null || mAdapter.isEmpty()) {
+            loaddingIndicator.setVisibility(View.VISIBLE);
+            getLoaderManager().restartLoader(NEWEST_LOADER_ID, null, Newest_Fragment.this);
+        }
+    }
 }
