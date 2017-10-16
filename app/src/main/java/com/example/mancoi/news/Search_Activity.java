@@ -34,7 +34,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     private final String HTTP_REQUEST = "https://content.guardianapis.com/search?";
     private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
     LoaderManager loaderManager;
-    ProgressBar loaddingIndicator;
+    ProgressBar loadingIndicator;
     private NewsAdapter mAdapter;
     private int LOADER_ID = 3;
     private String mQuery;
@@ -69,7 +69,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         final ListView newsListItem = (ListView) findViewById(R.id.list);
 
         emptyStateTextView = (TextView) findViewById(R.id.empty_state_tv);
-        loaddingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+        loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
 
         mAdapter = new NewsAdapter(Search_Activity.this, new ArrayList<News>());
         newsListItem.setAdapter(mAdapter);
@@ -85,7 +85,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
             loaderManager.initLoader(LOADER_ID, null, this);
 
         } else {
-            loaddingIndicator.setVisibility(View.GONE);
+            loadingIndicator.setVisibility(View.GONE);
             emptyStateTextView.setText(getResources().getString(R.string.no_internet));
         }
 
@@ -104,12 +104,12 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
             @Override
             public void onClick(View view) {
 
-                loaddingIndicator.setVisibility(View.VISIBLE);
+                loadingIndicator.setVisibility(View.VISIBLE);
                 if (QueryUtils.hasInternetConnection(Search_Activity.this)) {
                     loaderManager.restartLoader(LOADER_ID, null, Search_Activity.this);
 
                 } else {
-                    loaddingIndicator.setVisibility(View.GONE);
+                    loadingIndicator.setVisibility(View.GONE);
                     Toast.makeText(Search_Activity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -138,6 +138,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         searchView.setMaxWidth(px);
 
         searchView.clearFocus(); //Don't focus to the SearchView when user not want it so
+        searchView.setFocusable(false);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -177,8 +178,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         // no need to do anything else. Show the Toast message to inform user about that.
         // Else, set the order to what user have selected and restart the Loader
         // to show results with that order
-        if (itemId == android.R.id.home)
-        {
+        if (itemId == android.R.id.home) {
             return super.onOptionsItemSelected(item);
         } else if (!mOrderBy.equals(itemIdString)) {
             mOrderBy = itemIdString;
@@ -208,7 +208,8 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
 
-        loaddingIndicator.setVisibility(View.GONE);
+        getSupportLoaderManager().destroyLoader(LOADER_ID);
+        loadingIndicator.setVisibility(View.GONE);
         //Clear the adapter of previous news data
         mAdapter.clear();
 
