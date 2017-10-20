@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".News_MainActivity"
+        <activity
+            android:name=".News_MainActivity"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +22,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Search_Activity"
+        <activity
+            android:name=".Search_Activity"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -37,7 +39,8 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity android:name=".Sidebar_OnClick_Activity"
+        <activity
+            android:name=".Sidebar_OnClick_Activity"
             android:screenOrientation="sensorPortrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -45,7 +48,8 @@
                 android:value="com.example.mancoi.news.News_MainActivity" />
         </activity>
 
-        <activity android:name=".Content_Reader"
+        <activity
+            android:name=".Content_Reader"
             android:screenOrientation="sensorPortrait">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

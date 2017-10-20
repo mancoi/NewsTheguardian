@@ -105,7 +105,7 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
         //Clear the adapter of previous earthquake data
         mAdapter.clear();
 
-        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // If there is a valid data, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
@@ -117,6 +117,8 @@ public class Newest_Fragment extends Fragment implements LoaderManager.LoaderCal
         mAdapter.clear();
     }
 
+    // If this Activity resume after lost network connection, at that time
+    // the adapter will have cleared already, so we peform a reload
     @Override
     public void onResume() {
         super.onResume();

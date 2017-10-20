@@ -9,11 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by mancoi on 26/08/2017.
  */
 
-public class Headline_Adapter extends FragmentPagerAdapter {
+class Headline_Adapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
-    public Headline_Adapter(Context context, FragmentManager fm) {
+    Headline_Adapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }

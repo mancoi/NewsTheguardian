@@ -1,7 +1,5 @@
 package com.example.mancoi.news;
 
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -28,9 +26,9 @@ public final class QueryContent {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
     /**
-     * Create a private constructor because no one should ever create a {@link QueryUtils} object.
+     * Create a private constructor because no one should ever create a {@link QueryContent} object.
      * This class is only meant to hold static variables and methods, which can be accessed
-     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
+     * directly from the class name QueryContent (and an object instance of QueryContent is not needed).
      */
     private QueryContent() {
     }
@@ -38,7 +36,7 @@ public final class QueryContent {
     /**
      * Query the News dataset and return an {@link News} object to represent a single News.
      */
-    public static NewsContent fetchNewsData(String requestURL) {
+    static NewsContent fetchNewsData(String requestURL) {
 
         String jsonResponse = null;
 
@@ -52,10 +50,9 @@ public final class QueryContent {
             Log.e(LOG_TAG, "Error closing inputStream", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        NewsContent newses = extractNewsFromJson(jsonResponse);
+        // Extract relevant fields from the JSON response and create a list of {@link News}s
         // Return the list of {@link News}s
-        return newses;
+        return extractNewsFromJson(jsonResponse);
     }
 
     /**
@@ -178,17 +175,6 @@ public final class QueryContent {
         }
 
         return newsContent;
-    }
-
-    @SuppressWarnings("deprecation")
-    public static Spanned fromHtml(String html, PicassoImageGetter imageGetter){
-        Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY, imageGetter, null);
-        } else {
-            result = Html.fromHtml(html, imageGetter, null);
-        }
-        return result;
     }
 
 }

@@ -40,7 +40,7 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.news_main_list, container, false);
 
-        final ListView newsListItem = (ListView) rootView.findViewById(R.id.list);
+        final ListView newsListItem = rootView.findViewById(R.id.list);
 
         emptyStateTextView = rootView.findViewById(R.id.empty_state_tv);
         loaddingIndicator = rootView.findViewById(R.id.loading_indicator);
@@ -106,18 +106,21 @@ public class International_Fragment extends Fragment implements LoaderManager.Lo
         //Clear the adapter of previous news data
         mAdapter.clear();
 
-        // If there is a valid list of {@link News}s, then add them to the adapter's
+        // If there is a valid data, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
         }
 
     }
+
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
         mAdapter.clear();
     }
 
+    // If this Activity resume after lost network connection, at that time
+    // the adapter will have cleared already, so we peform a reload
     @Override
     public void onResume() {
         super.onResume();

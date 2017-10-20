@@ -9,11 +9,11 @@ import java.util.List;
  * Created by mancoi on 27/08/2017.
  */
 
-public class NewsLoader extends AsyncTaskLoader<List<News>> {
+class NewsLoader extends AsyncTaskLoader<List<News>> {
 
     private String mUrl;
 
-    public NewsLoader(Context context, String url) {
+    NewsLoader(Context context, String url) {
         super(context);
         mUrl = url;
     }
@@ -31,7 +31,6 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
             return null;
         }
 
-        List<News> newses = QueryUtils.fetchNewsData(mUrl);
-        return newses;
+        return QueryUtils.fetchNewsData(mUrl);
     }
 }

@@ -268,10 +268,10 @@ public class Content_Reader extends AppCompatActivity {
 
     /**
      * {@link AsyncTask} to perform the network request on a background thread, and then
-     * update the UI with the list of earthquakes in the response.
+     * update the UI with the list of news data in the response.
      * <p>
      * AsyncTask has three generic parameters: the input type, a type used for progress updates, and
-     * an output type. Our task will take a String URL, and return an Earthquake. We won't do
+     * an output type. Our task will take a String URL, and return an NewsContent. We won't do
      * progress updates, so the second generic is just Void.
      * <p>
      * We'll only override two of the methods of AsyncTask: doInBackground() and onPostExecute().
@@ -313,7 +313,7 @@ public class Content_Reader extends AppCompatActivity {
         @Override
         protected void onPostExecute(final NewsContent data) {
 
-            // If there is a valid list of {@link News}s, then add them to the adapter's
+            // If there is a valid data, then add them to the adapter's
             // data set. This will trigger the content to update.
             if (data != null) {
                 mWebview.loadDataWithBaseURL(

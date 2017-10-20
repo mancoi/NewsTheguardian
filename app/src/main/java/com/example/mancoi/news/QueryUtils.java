@@ -67,10 +67,9 @@ public final class QueryUtils extends FragmentActivity {
             Log.e(LOG_TAG, "Error closing inputStream", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        List<News> newses = extractNewsFromJson(jsonResponse);
+        // Extract relevant fields from the JSON response and create a list of {@link News}s
         // Return the list of {@link News}s
-        return newses;
+        return extractNewsFromJson(jsonResponse);
     }
 
     /**

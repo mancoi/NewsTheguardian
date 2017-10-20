@@ -9,13 +9,12 @@ public class NewsContent {
     private String mMain;
     private String mBody;
 
-    public NewsContent(String main, String body) {
+    NewsContent(String main, String body) {
         mMain = main;
         mBody = body;
     }
 
-    public String getContent()
-    {
+    public String getContent() {
         return mMain + mBody;
     }
 

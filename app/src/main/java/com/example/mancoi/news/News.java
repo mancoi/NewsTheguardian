@@ -31,23 +31,23 @@ public class News {
         return mTitle;
     }
 
-    public String getAuthor() {
+    String getAuthor() {
         return mAuthor;
     }
 
-    public String getDate() {
+    String getDate() {
         return mDate;
     }
 
-    public String getSection() {
+    String getSection() {
         return mSection;
     }
 
-    public String getImgUrl() {
+    String getImgUrl() {
         return mImgUrl;
     }
 
-    public String getUrl() {
+    String getUrl() {
         return mUrl;
     }
 

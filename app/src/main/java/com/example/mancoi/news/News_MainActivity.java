@@ -63,8 +63,7 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
         // Collapse the SearchView if it is expanding
         // Such as when user type something to the SearchView and leave it there,
         // when the user back to this main activity, the SearchView should be collapsed already
-        if (mSearchView != null && !mSearchView.isIconified())
-        {
+        if (mSearchView != null && !mSearchView.isIconified()) {
             mSearchView.onActionViewCollapsed();
         }
     }
@@ -78,7 +77,7 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
         mSearchView = (SearchView) menu.findItem(R.id.search_button).getActionView();
         //Current activity is not the searchable activity, so set it to Search_Activity class
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, Search_Activity.class)));
-        mSearchView.setIconifiedByDefault(true); //iconify the widget; expand it by default
+        mSearchView.setIconifiedByDefault(true); //iconify the widget;
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

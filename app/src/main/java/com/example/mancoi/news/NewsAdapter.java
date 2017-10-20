@@ -42,17 +42,17 @@ public class NewsAdapter extends ArrayAdapter<News> {
         News currentNews = getItem(position);
 
         // Find the TextView in the news_list_item.xml layout with the ID title_tv
-        TextView titleTextView = (TextView) listItemView.findViewById(R.id.title_tv);
+        TextView titleTextView = listItemView.findViewById(R.id.title_tv);
         // Display the title of the current News in that TextView
         titleTextView.setText(currentNews.getTitle());
 
         // Find the TextView in the news_list_item.xml layout with the ID author_tv
-        TextView authorTextView = (TextView) listItemView.findViewById(R.id.author_tv);
+        TextView authorTextView = listItemView.findViewById(R.id.author_tv);
         // Display the author of the current News in that TextView
         authorTextView.setText(currentNews.getAuthor());
 
         // Find the TextView in the news_list_item.xml layout with the ID date_tv
-        TextView dateTextView = (TextView) listItemView.findViewById(R.id.date_tv);
+        TextView dateTextView = listItemView.findViewById(R.id.date_tv);
 
         //Set the input format time
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");

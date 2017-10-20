@@ -31,8 +31,6 @@ import java.util.List;
 
 public class Search_Activity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
 
-    private final String HTTP_REQUEST = "https://content.guardianapis.com/search?";
-    private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
     LoaderManager loaderManager;
     ProgressBar loadingIndicator;
     private NewsAdapter mAdapter;
@@ -194,6 +192,9 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
 
+        String HTTP_REQUEST = "https://content.guardianapis.com/search?";
+        String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
+
         Uri baseUri = Uri.parse(HTTP_REQUEST);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
@@ -213,7 +214,7 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
         //Clear the adapter of previous news data
         mAdapter.clear();
 
-        // If there is a valid list of {@link News}s, then add them to the adapter's
+        // If there is a valid data, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);

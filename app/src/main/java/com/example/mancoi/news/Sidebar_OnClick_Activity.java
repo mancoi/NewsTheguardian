@@ -25,10 +25,8 @@ import java.util.List;
 
 public class Sidebar_OnClick_Activity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
 
-    private final String HTTP_REQUEST = "https://content.guardianapis.com/";
-    private final String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
     LoaderManager loaderManager;
-    ProgressBar loaddingIndicator;
+    ProgressBar loadingIndicator;
     private NewsAdapter mAdapter;
     private int LOADER_ID = 1;
     private String mIdToRetrieve;
@@ -43,7 +41,7 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
         final ListView newsListItem = (ListView) findViewById(R.id.list);
 
         emptyStateTextView = (TextView) findViewById(R.id.empty_state_tv);
-        loaddingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
+        loadingIndicator = (ProgressBar) findViewById(R.id.loading_indicator);
 
         mAdapter = new NewsAdapter(Sidebar_OnClick_Activity.this, new ArrayList<News>());
         newsListItem.setAdapter(mAdapter);
@@ -70,7 +68,7 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
             loaderManager.initLoader(LOADER_ID, null, this);
 
         } else {
-            loaddingIndicator.setVisibility(View.GONE);
+            loadingIndicator.setVisibility(View.GONE);
             emptyStateTextView.setText(getResources().getString(R.string.no_internet));
         }
 
@@ -87,11 +85,11 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
             @Override
             public void onClick(View view) {
 
-                loaddingIndicator.setVisibility(View.VISIBLE);
+                loadingIndicator.setVisibility(View.VISIBLE);
                 if (QueryUtils.hasInternetConnection(Sidebar_OnClick_Activity.this)) {
                     loaderManager.restartLoader(LOADER_ID, null, Sidebar_OnClick_Activity.this);
                 } else {
-                    loaddingIndicator.setVisibility(View.GONE);
+                    loadingIndicator.setVisibility(View.GONE);
                     Toast.makeText(Sidebar_OnClick_Activity.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -101,6 +99,7 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
 
+        String HTTP_REQUEST = "https://content.guardianapis.com/";
         Uri baseUri = Uri.parse(HTTP_REQUEST);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
@@ -112,7 +111,7 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
         }
         uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail,trailText");
         uriBuilder.appendQueryParameter("show-editors-picks", "true");
-        //uriBuilder.appendQueryParameter("order-by", "relevance");
+        String API_KEY = "3d076462-19d6-4cae-8d80-c3353eee520c";
         uriBuilder.appendQueryParameter("api-key", API_KEY);
 
         return new NewsLoader(this, uriBuilder.toString());
@@ -120,11 +119,14 @@ public class Sidebar_OnClick_Activity extends AppCompatActivity implements Loade
 
     @Override
     public void onLoadFinished(Loader<List<News>> loader, List<News> data) {
-        loaddingIndicator.setVisibility(View.GONE);
+
+        getSupportLoaderManager().destroyLoader(LOADER_ID);
+
+        loadingIndicator.setVisibility(View.GONE);
         //Clear the adapter of previous news data
         mAdapter.clear();
 
-        // If there is a valid list of {@link News}s, then add them to the adapter's
+        // If there is a valid data, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
