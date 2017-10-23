@@ -86,7 +86,8 @@
                     android:layout_below="@id/trailText_tv"
                     android:layout_centerHorizontal="true"
                     android:padding="8dp"
-                    android:text="@string/read_more" />
+                    android:text="@string/read_more"
+                    android:textColor="#fff" />
 
                 <TextView
                     android:id="@+id/body_tv"

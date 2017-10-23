@@ -14,6 +14,7 @@
     <!--Style the text and menu icon of toolbar-->
     <style name="toolBarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:tint">#FFF</item>
+        <item name="android:buttonTint">#fff</item>
         <!--Change the SearchView's cursor color-->
         <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
@@ -35,15 +36,15 @@
     </style>
 
     <style name="tabStyle" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#e65100</item>
+        <item name="tabIndicatorColor">#E8EAF6</item>
         <item name="tabBackground">@color/colorPrimary</item>
-        <item name="tabSelectedTextColor">@android:color/white</item>
+        <item name="tabSelectedTextColor">#fff</item>
         <item name="tabTextAppearance">@style/CategoryTabTextAppearance</item>
     </style>
 
     <!-- Text appearance style for a category tab -->
     <style name="CategoryTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textColor">#ffe0b2</item>
+        <item name="android:textColor">#C5CAE9</item>
     </style>
 
 </resources>

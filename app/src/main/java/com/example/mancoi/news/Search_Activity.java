@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -137,6 +139,10 @@ public class Search_Activity extends AppCompatActivity implements LoaderManager.
 
         searchView.clearFocus(); //Don't focus to the SearchView when user not want it so
         searchView.setFocusable(false);
+
+        // Set the color for the text that being typed in the SearchView
+        EditText searchEditText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(ContextCompat.getColor(this, android.R.color.white));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +18,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 public class News_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -86,6 +88,9 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
         //Current activity is not the searchable activity, so set it to Search_Activity class
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, Search_Activity.class)));
         mSearchView.setIconifiedByDefault(true); //iconify the widget;
+        // Set the color for the text that being typed in the SearchView
+        EditText searchEditText = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(ContextCompat.getColor(this, android.R.color.white));
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -148,6 +153,8 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
 
         // Enable the drawer indicator (hamburger menu)
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+        // Change that indicator's color to WHITE
+        mDrawerToggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, android.R.color.white));
         mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
 }
