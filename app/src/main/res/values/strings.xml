@@ -37,4 +37,7 @@
     <string name="this_is_a_thumbnail">This is a thumbnail</string>
     <string name="no_internet">No internet connection. Tap to retry.</string>
     <string name="found_nothing">Found nothing</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

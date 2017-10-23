@@ -329,7 +329,8 @@ public class Content_Reader extends AppCompatActivity {
                         "UTF-8",
                         null
                 );
-
+            } else {
+                mWebview.loadData("<p>Some error(s) happened</p>", "text/html", "UTF-8");
             }
         }
     }

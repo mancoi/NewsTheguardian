@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -21,20 +22,23 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
 
     ViewPager viewPager;
     TabLayout tabLayout;
-
     SearchView mSearchView = null;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setNavigationViewListner();
+        setNavigationViewListener();
 
         //Set the toolbar to support actionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         // Find the view pager that will allow the user to swipe between fragments
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -54,6 +58,10 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
         //   3. Set the tab layout's tab names with the view pager's adapter's titles
         //      by calling onPageTitle()
         tabLayout.setupWithViewPager(viewPager);
+
+        // Find the Drawer
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        setupDrawer();
     }
 
     @Override
@@ -94,6 +102,16 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return mDrawerToggle.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -111,15 +129,25 @@ public class News_MainActivity extends AppCompatActivity implements NavigationVi
         intent.putExtra("groupID", group);
         startActivity(intent);
 
+        // Close the drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
         return true;
     }
 
-    private void setNavigationViewListner() {
+    private void setNavigationViewListener() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private void setupDrawer() {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close);
+
+        // Enable the drawer indicator (hamburger menu)
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
 }
