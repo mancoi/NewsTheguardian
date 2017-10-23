@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="end|center_vertical"
-                android:textColor="#FF9800"
+                android:textColor="@color/colorPrimary"
                 tools:text="tech" />
 
         </LinearLayout>
