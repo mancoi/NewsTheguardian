@@ -135,10 +135,8 @@ public class Content_Reader extends AppCompatActivity {
                 // With this, the application will ask user what mail application should handle it.
                 if (url.startsWith("mailto:")) {
 
-                    String[] receiverMail = url.split(":");
-
                     Intent intent = new Intent(Intent.ACTION_SENDTO);
-                    intent.setData(Uri.parse("mailto:" + receiverMail[1]));
+                    intent.setData(Uri.parse(url));
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
                     }
